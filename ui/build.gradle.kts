@@ -50,6 +50,14 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
+    // Navigation
+    implementation(libs.navigation.compose)
+    implementation(libs.nav3.runtime)
+    implementation(libs.nav3.ui)
+    implementation(libs.androidx.lifecycle.viewmodel.nav3)
+    implementation(libs.kotlinx.serialization.core)
+    implementation(libs.kotlinx.serialization.json)
+
     // Icons
     implementation(libs.androidx.material.icons.extended)
 
