@@ -41,6 +41,11 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
 
+    // Firebase
+    implementation(project.dependencies.platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.database)
+
     // Room Database
     implementation(libs.room.runtime)
     implementation(libs.room.runtime.android)
