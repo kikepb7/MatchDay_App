@@ -21,6 +21,16 @@ class FirebaseGenericService<T : Any>(
         return id
     }
 
+    fun createItemInPath(item: T, dynamicPath: String, key: String? = null): String {
+        val ref = key?.let { reference.child(dynamicPath).child(it) }
+            ?: reference.child(dynamicPath).push()
+        val id = ref.key.orEmpty()
+
+        ref.setValue(item)
+
+        return id
+    }
+
     fun getItemById(id: String): Flow<T?> = reference.child("$basePath/$id").snapshots.map { snapshot ->
             snapshot.getValue(clazz)
     }
@@ -29,7 +39,11 @@ class FirebaseGenericService<T : Any>(
         snapshot.children.mapNotNull { it.getValue(clazz) }
     }
 
-    fun updateItem(id: String, item: T) = reference.child("$basePath/$id").setValue(item)
+    fun updateItem(id: String, item: T) {
+        reference.child("$basePath/$id").setValue(item)
+    }
 
-    fun deleteItem(id: String) = reference.child("$basePath/$id").removeValue()
+    fun deleteItem(id: String) {
+        reference.child("$basePath/$id").removeValue()
+    }
 }

@@ -1,4 +1,4 @@
-package com.example.data.dtos
+package com.example.data.feature.user.dto
 
 import java.util.Calendar
 
