@@ -10,6 +10,7 @@ fun UserDto.toUserModel(): UserModel =
         lastName = lastName,
         email = email,
         playerId = playerId,
+        clubId = clubId,
         rol = rol
     )
 
@@ -20,5 +21,6 @@ fun UserModel.toUserDto(): UserDto =
         lastName = lastName,
         email = email,
         playerId = playerId,
+        clubId = clubId,
         rol = rol
     )
