@@ -50,6 +50,9 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
+    // Coil
+    implementation(libs.coil.compose)
+
     // Navigation
     implementation(libs.navigation.compose)
     implementation(libs.nav3.runtime)

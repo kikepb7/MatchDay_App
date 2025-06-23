@@ -14,7 +14,7 @@ koin = "4.0.0"
 koinCompose = "4.0.0"
 koinComposeViewModel = "4.0.0"
 viewmodel = "2.8.2"
-coil = "3.0.0-alpha08"
+coilVersion = "3.0.0-alpha08"
 materialIconsExtended = "1.7.8"
 retrofit = "2.10.0"
 datastorePreferences = "1.1.7"
@@ -60,8 +60,8 @@ koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koinComp
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koinComposeViewModel" }
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "viewmodel" }
-coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
-coil-network-ktor = { group = "io.coil-kt.coil3", name = "coil-network-ktor", version.ref = "coil" }
+coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coilVersion" }
+coil-network-ktor = { group = "io.coil-kt.coil3", name = "coil-network-ktor", version.ref = "coilVersion" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 gsonConverter = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
 androidx-datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastorePreferences"}
