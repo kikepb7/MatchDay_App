@@ -45,6 +45,7 @@ dependencies {
     implementation(project.dependencies.platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.database)
+    implementation(libs.firebase.authentication)
 
     // Room Database
     implementation(libs.room.runtime)
