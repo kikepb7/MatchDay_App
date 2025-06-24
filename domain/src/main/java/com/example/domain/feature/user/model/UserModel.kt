@@ -5,6 +5,7 @@ data class UserModel(
     val name: String = "",
     val lastName: String = "",
     val email: String = "",
+    val password: String = "",
     val playerId: String? = null,
     val clubId: String? = "",
     val rol: String = "player"

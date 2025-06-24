@@ -7,6 +7,7 @@ data class UserDto(
     val name: String = "",
     val lastName: String = "",
     val email: String = "",
+    val password: String = "",
     val playerId: String? = null,
     val clubId: String? = null,
     val rol: String = "player"
