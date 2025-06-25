@@ -1,9 +1,7 @@
 package com.example.data.feature.match.dto
 
-import java.util.UUID
-
 data class MatchDto(
-    val id: String? = UUID.randomUUID().toString(),
+    val id: String? = "",
     val number: Int = 0,
     val date: Long = 0L,
     val whiteTeam: List<String> = emptyList(),

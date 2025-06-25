@@ -1,9 +1,7 @@
 package com.example.data.feature.user.dto
 
-import java.util.UUID
-
 data class UserDto(
-    val id: String? = UUID.randomUUID().toString(),
+    val id: String? = "",
     val name: String = "",
     val lastName: String = "",
     val email: String = "",

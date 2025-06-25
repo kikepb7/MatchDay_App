@@ -48,7 +48,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegisterScreenView(onSuccessNavigate: () -> Unit) {
+fun RegisterScreenView(onSuccessNavigate: (userId: String, clubId: String) -> Unit) {
 
     val registerViewModel = koinViewModel<RegisterViewModel>()
     val registerState by registerViewModel.state.collectAsStateWithLifecycle()
@@ -95,7 +95,14 @@ fun RegisterScreenView(onSuccessNavigate: () -> Unit) {
                 }
             })
 
-            RegisterStatusMessage(state = registerState, onSuccess = onSuccessNavigate)
+            RegisterStatusMessage(state = registerState, onSuccess = {
+                if (registerState is RegisterState.Success) {
+                    val successState = registerState as RegisterState.Success
+                    val userId = successState.user.id.orEmpty()
+                    val clubId = successState.club?.id.orEmpty()
+                    onSuccessNavigate(userId, clubId)
+                }
+            })
         }
     }
 }

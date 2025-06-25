@@ -61,14 +61,13 @@ import java.util.Locale
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreenView(
-    user: UserModel,
-    club: ClubModel
+    userId: String,
+    clubId: String
 ) {
     val dashboardViewmodel = koinViewModel<DashboardViewModel>()
     val dashboardState by dashboardViewmodel.state.collectAsStateWithLifecycle()
-    val clubId = club.id.toString()
 
-    LaunchedEffect(Unit) { dashboardViewmodel.loadData(clubId = clubId) }
+    LaunchedEffect(Unit) { dashboardViewmodel.loadData(userId = userId, clubId = clubId) }
 
     Scaffold(
         topBar = {
@@ -86,9 +85,9 @@ fun DashboardScreenView(
 
         when (val state = dashboardState) {
             is DashboardState.Loading -> CustomLoadingView(padding = innerPadding)
-            is DashboardState.Error -> ErrorView(padding = innerPadding, message = "ERROR")
+            is DashboardState.Error -> ErrorView(padding = innerPadding, message = state.message)
             is DashboardState.Success -> {
-                DashboardContent(innerPadding = innerPadding, user = user, club = club, state = state)
+                DashboardContent(innerPadding = innerPadding, user = state.user, club = state.club, state = state)
             }
             is DashboardState.Empty -> EmptyView(padding = innerPadding)
         }

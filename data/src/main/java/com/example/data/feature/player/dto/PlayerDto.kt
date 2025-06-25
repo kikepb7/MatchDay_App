@@ -1,9 +1,7 @@
 package com.example.data.feature.player.dto
 
-import java.util.UUID
-
 data class PlayerDto(
-    val id: String? = UUID.randomUUID().toString(),
+    val id: String? = "",
     val name: String = "",
     val number: Int = 0,
     val position: String = "",

@@ -30,7 +30,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun SignUpScreenView(
-    onSignUpClick: (String) -> Unit,
+    onSignUpClick: (String, String) -> Unit,
     onRegisterClick: () -> Unit,
 ) {
     val signUpViewModel = koinViewModel<SignUpViewModel>()
@@ -88,19 +88,10 @@ fun SignUpScreenView(
             )
             is SignUpState.Success -> {
                 LaunchedEffect(Unit) {
-                    onSignUpClick(currentState.userId)
+                    onSignUpClick(currentState.userId, currentState.clubId)
                 }
             }
             else -> Unit
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun SignUpScreenPreview() {
-    SignUpScreenView(
-        onSignUpClick = {("")},
-        onRegisterClick = {}
-    )
 }
