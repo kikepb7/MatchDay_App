@@ -8,21 +8,19 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
-import com.example.domain.feature.club.model.ClubModel
-import com.example.domain.feature.user.model.UserModel
 import com.example.ui.feature.dashboard.DashboardScreenView
 import com.example.ui.feature.login.LoginScreenView
 import com.example.ui.feature.signup.SignUpScreenView
 import com.example.ui.feature.register.RegisterScreenView
-import com.example.ui.navigation.HomeNavKeys.HomeScreen
 import com.example.ui.navigation.HomeNavKeys.LoginScreen
+import com.example.ui.navigation.HomeNavKeys.SignUpScreen
 import com.example.ui.navigation.HomeNavKeys.RegisterScreen
 import com.example.ui.navigation.HomeNavKeys.DashboardScreen
 
 @Composable
 fun NavigationRoot(modifier: Modifier = Modifier) {
 
-    val backStack = rememberNavBackStack(HomeScreen)
+    val backStack = rememberNavBackStack(LoginScreen)
 
     NavDisplay(
         modifier = modifier,
@@ -34,23 +32,27 @@ fun NavigationRoot(modifier: Modifier = Modifier) {
         ),
         entryProvider = { key ->
             when (key) {
-                is HomeScreen -> NavEntry(key = key) {
+                is LoginScreen -> NavEntry(key = key) {
                     LoginScreenView(
-                        onSignUpClick = { backStack.add(LoginScreen) },
+                        onSignUpClick = { backStack.add(SignUpScreen) },
                         onRegisterClick = { backStack.add(RegisterScreen)}
                     )
                 }
-                is LoginScreen -> NavEntry(key = key) {
+                is SignUpScreen -> NavEntry(key = key) {
                     SignUpScreenView(
-                        onSignUpClick = { backStack.add(DashboardScreen(UserModel(), ClubModel())) },
-                        onRegisterClick = { backStack.add(HomeScreen)}
+                        onSignUpClick = { userId, clubId ->
+                            backStack.add(DashboardScreen(userId = userId, clubId = clubId))
+                        },
+                        onRegisterClick = { backStack.add(SignUpScreen)}
                     )
                 }
                 is RegisterScreen -> NavEntry(key = key) {
-                    RegisterScreenView(onSuccessNavigate = { backStack.add(DashboardScreen(UserModel(), ClubModel())) })
+                    RegisterScreenView(onSuccessNavigate = { userId, clubId ->
+                        backStack.add(DashboardScreen(userId = userId, clubId = clubId))
+                    })
                 }
                 is DashboardScreen -> NavEntry(key = key) {
-                    DashboardScreenView(user = key.user, club = key.club)
+                    DashboardScreenView(userId = key.userId, clubId = key.clubId, backStack = backStack)
                 }
                 else -> throw RuntimeException("Unknown NavKey: $key")
             }
