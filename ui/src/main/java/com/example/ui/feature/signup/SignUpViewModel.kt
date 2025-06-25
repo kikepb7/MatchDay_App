@@ -3,8 +3,10 @@ package com.example.ui.feature.signup
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.common.Either
+import com.example.domain.feature.authentication.repository.AuthRepository
 import com.example.domain.feature.authentication.usecases.SignUpEmailPasswordUseCase
 import com.example.domain.feature.user.usecases.GetUserByIdUseCase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
@@ -18,8 +20,8 @@ class SignUpViewModel(
     private val _state = MutableStateFlow<SignUpState>(SignUpState.Idle)
     val state= _state.asStateFlow()
 
-    fun signUp(email: String, password: String) {
-        viewModelScope.launch {
+    fun signUpWithEmail(email: String, password: String) {
+        viewModelScope.launch(Dispatchers.IO) {
             _state.value = SignUpState.Loading
 
             when (val result = signUpEmailPasswordUseCase(email = email, password = password)) {
@@ -35,11 +37,37 @@ class SignUpViewModel(
             }
         }
     }
+
+    /*fun signUpWithPhoneNumber(phoneNumber: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _state.value = SignUpState.Loading
+
+            when (val result = authRepository.signUpWithPhoneVerification(phoneNumber = phoneNumber)) {
+                is Either.Success -> _state.value = SignUpState.CodeSent
+                is Either.Error -> _state.value = SignUpState.Error(message = result.error)
+            }
+        }
+    }
+
+    fun verifyOtp(verificationId: String, otp: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _state.value = SignUpState.Loading
+
+            when (val result = authRepository.verifyOtpCode(verificationId, otp)) {
+                is Either.Success -> {
+                    val user = getUserByIdUseCase(result.data).first()
+                    _state.value = SignUpState.Success(userId = user?.id.orEmpty(), clubId = user?.clubId.orEmpty())
+                }
+                is Either.Error -> _state.value = SignUpState.Error(result.error)
+            }
+        }
+    }*/
 }
 
 sealed interface SignUpState {
     data object Idle : SignUpState
     data object Loading : SignUpState
+    data object CodeSent : SignUpState
     data class Success(val userId: String, val clubId: String) : SignUpState
     data class Error(val message: String) : SignUpState
 }

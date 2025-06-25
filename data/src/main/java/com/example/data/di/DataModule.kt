@@ -1,5 +1,6 @@
 package com.example.data.di
 
+import android.app.Activity
 import com.example.data.feature.authentication.AuthRepositoryImpl
 import com.example.data.feature.club.ClubRepositoryImpl
 import com.example.data.feature.match.MatchRepositoryImpl
@@ -15,6 +16,7 @@ import com.example.domain.feature.user.repository.UserRepository
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.database
+import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 val dataModule = module {
