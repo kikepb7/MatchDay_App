@@ -5,7 +5,7 @@ import com.google.firebase.database.snapshots
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class FirebaseGenericService<T : Any>(
+class FirebaseDatabaseGenericService<T : Any>(
     private val reference: DatabaseReference,
     private val basePath: String,
     private val clazz: Class<T>

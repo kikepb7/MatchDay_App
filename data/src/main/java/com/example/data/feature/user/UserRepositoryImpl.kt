@@ -3,7 +3,7 @@ package com.example.data.feature.user
 import com.example.data.feature.user.dto.UserDto
 import com.example.data.feature.user.mapper.toUserDto
 import com.example.data.feature.user.mapper.toUserModel
-import com.example.data.firebase.FirebaseGenericService
+import com.example.data.firebase.FirebaseDatabaseGenericService
 import com.example.domain.feature.user.model.UserModel
 import com.example.domain.feature.user.repository.UserRepository
 import com.google.firebase.database.DatabaseReference
@@ -18,19 +18,19 @@ class UserRepositoryImpl(
         const val USER_PATH = "users"
     }
 
-    private val service = FirebaseGenericService(
+    private val service = FirebaseDatabaseGenericService(
         reference = reference,
         basePath = USER_PATH,
         clazz = UserDto::class.java
     )
 
-    override fun createUser(user: UserModel): String = service.createItem(item = user.toUserDto())
+    override suspend fun createUser(user: UserModel): String = service.createItem(item = user.toUserDto(), key = user.id)
 
-    override fun getAllUsers(): Flow<List<UserModel>> = service.getAllItems().map { list -> list.map { it.toUserModel() } }
+    override suspend fun getAllUsers(): Flow<List<UserModel>> = service.getAllItems().map { list -> list.map { it.toUserModel() } }
 
-    override fun getUserById(userId: String): Flow<UserModel?> = service.getItemById(id = userId).map { it?.toUserModel() }
+    override suspend fun getUserById(userId: String): Flow<UserModel?> = service.getItemById(id = userId).map { it?.toUserModel() }
 
-    override fun updateUser(userId: String, user: UserModel) = service.updateItem(id = userId, item = user.toUserDto())
+    override suspend fun updateUser(userId: String, user: UserModel) = service.updateItem(id = userId, item = user.toUserDto())
 
-    override fun deleteUser(userId: String) = service.deleteItem(id = userId)
+    override suspend fun deleteUser(userId: String) = service.deleteItem(id = userId)
 }
