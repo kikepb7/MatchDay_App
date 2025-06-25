@@ -44,6 +44,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation3.runtime.NavBackStack
 import coil3.compose.AsyncImage
 import com.example.domain.feature.club.model.ClubModel
 import com.example.domain.feature.match.model.MatchModel
@@ -52,6 +53,9 @@ import com.example.domain.feature.user.model.UserModel
 import com.example.ui.R.drawable as RDrawable
 import com.example.ui.feature.dashboard.provider.mockMatches
 import com.example.ui.feature.dashboard.provider.mockPlayers
+import com.example.ui.feature.login.LogoutState
+import com.example.ui.feature.login.LogoutViewModel
+import com.example.ui.navigation.HomeNavKeys
 import kotlinx.coroutines.delay
 import org.koin.compose.viewmodel.koinViewModel
 import java.text.SimpleDateFormat
@@ -62,12 +66,21 @@ import java.util.Locale
 @Composable
 fun DashboardScreenView(
     userId: String,
-    clubId: String
+    clubId: String,
+    backStack: NavBackStack
 ) {
     val dashboardViewmodel = koinViewModel<DashboardViewModel>()
     val dashboardState by dashboardViewmodel.state.collectAsStateWithLifecycle()
+    val logoutViewModel = koinViewModel<LogoutViewModel>()
+    val logoutState by logoutViewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) { dashboardViewmodel.loadData(userId = userId, clubId = clubId) }
+    LaunchedEffect(logoutState) {
+        if (logoutState is LogoutState.Success) {
+            backStack.clear()
+            backStack.add(HomeNavKeys.SignUpScreen)
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -75,10 +88,13 @@ fun DashboardScreenView(
         },
         bottomBar = {
             BottomAppBar {
-                Text(
-                    text = "© Peña Deportiva",
-                    modifier = Modifier.padding(16.dp)
-                )
+                Button(
+                    onClick = { logoutViewModel.logout() },
+                    modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Text(text = "Logout")
+                }
             }
         }
     ) { innerPadding ->
