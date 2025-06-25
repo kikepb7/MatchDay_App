@@ -46,6 +46,7 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.database)
     implementation(libs.firebase.authentication)
+    implementation(libs.firebase.auth.ktx)
 
     // Room Database
     implementation(libs.room.runtime)

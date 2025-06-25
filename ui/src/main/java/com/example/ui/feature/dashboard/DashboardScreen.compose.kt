@@ -78,7 +78,7 @@ fun DashboardScreenView(
     LaunchedEffect(logoutState) {
         if (logoutState is LogoutState.Success) {
             backStack.clear()
-            backStack.add(HomeNavKeys.SignUpScreen)
+            backStack.add(HomeNavKeys.LoginScreen)
         }
     }
 
