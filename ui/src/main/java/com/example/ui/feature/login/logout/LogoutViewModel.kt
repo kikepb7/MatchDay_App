@@ -1,4 +1,4 @@
-package com.example.ui.feature.login
+package com.example.ui.feature.login.logout
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
