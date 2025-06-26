@@ -10,8 +10,8 @@ import androidx.navigation3.ui.NavDisplay
 import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
 import com.example.ui.feature.dashboard.DashboardScreenView
 import com.example.ui.feature.login.LoginScreenView
-import com.example.ui.feature.signup.SignUpScreenView
-import com.example.ui.feature.register.RegisterScreenView
+import com.example.ui.feature.login.signup.SignUpScreenView
+import com.example.ui.feature.login.register.RegisterScreenView
 import com.example.ui.navigation.HomeNavKeys.LoginScreen
 import com.example.ui.navigation.HomeNavKeys.SignUpScreen
 import com.example.ui.navigation.HomeNavKeys.RegisterScreen

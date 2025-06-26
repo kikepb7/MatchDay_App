@@ -1,4 +1,4 @@
-package com.example.ui.feature.register
+package com.example.ui.feature.login.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

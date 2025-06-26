@@ -1,9 +1,9 @@
-package com.example.ui.feature.signup
+package com.example.ui.feature.login.signup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.common.Either
-import com.example.domain.feature.authentication.repository.AuthRepository
+import com.example.domain.feature.authentication.usecases.RegisterUserWithGoogleUseCase
 import com.example.domain.feature.authentication.usecases.SignUpEmailPasswordUseCase
 import com.example.domain.feature.user.usecases.GetUserByIdUseCase
 import kotlinx.coroutines.Dispatchers
@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 
 class SignUpViewModel(
     private val signUpEmailPasswordUseCase: SignUpEmailPasswordUseCase,
+    private val registerUserWithGoogleUseCase: RegisterUserWithGoogleUseCase,
     private val getUserByIdUseCase: GetUserByIdUseCase
 ) : ViewModel() {
 
@@ -38,30 +39,49 @@ class SignUpViewModel(
         }
     }
 
-    /*fun signUpWithPhoneNumber(phoneNumber: String) {
+    fun registerWithGoogle(idToken: String) {
         viewModelScope.launch(Dispatchers.IO) {
             _state.value = SignUpState.Loading
 
-            when (val result = authRepository.signUpWithPhoneVerification(phoneNumber = phoneNumber)) {
-                is Either.Success -> _state.value = SignUpState.CodeSent
-                is Either.Error -> _state.value = SignUpState.Error(message = result.error)
+            when (val result = registerUserWithGoogleUseCase(idToken = idToken)) {
+                is Either.Success -> {
+                    val userId = result.data
+                    val user = getUserByIdUseCase(userId).first()
+                    _state.value = SignUpState.Success(userId = user?.id.orEmpty(), clubId = user?.clubId.orEmpty())
+                }
+
+                is Either.Error -> {
+                    _state.value = SignUpState.Error(message = result.error)
+                }
             }
         }
     }
 
-    fun verifyOtp(verificationId: String, otp: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            _state.value = SignUpState.Loading
 
-            when (val result = authRepository.verifyOtpCode(verificationId, otp)) {
-                is Either.Success -> {
-                    val user = getUserByIdUseCase(result.data).first()
-                    _state.value = SignUpState.Success(userId = user?.id.orEmpty(), clubId = user?.clubId.orEmpty())
-                }
-                is Either.Error -> _state.value = SignUpState.Error(result.error)
-            }
-        }
-    }*/
+//    fun signUpWithPhoneNumber(phoneNumber: String) {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            _state.value = SignUpState.Loading
+//
+//            when (val result = googleSignInClientProvider.signUpWithPhoneVerification(phoneNumber = phoneNumber, activity = )) {
+//                is Either.Success -> _state.value = SignUpState.CodeSent
+//                is Either.Error -> _state.value = SignUpState.Error(message = result.error)
+//            }
+//        }
+//    }
+
+//    fun verifyOtp(verificationId: String, otp: String) {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            _state.value = SignUpState.Loading
+//
+//            when (val result = googleSignInClientProvider.verifyOtpCode(verificationId, otp)) {
+//                is Either.Success -> {
+//                    val user = getUserByIdUseCase(result.data).first()
+//                    _state.value = SignUpState.Success(userId = user?.id.orEmpty(), clubId = user?.clubId.orEmpty())
+//                }
+//                is Either.Error -> _state.value = SignUpState.Error(result.error)
+//            }
+//        }
+//    }
 }
 
 sealed interface SignUpState {
