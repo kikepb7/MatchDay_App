@@ -9,6 +9,7 @@ interface AuthRepository {
     suspend fun registerWithEmailAndPassword(email: String, password: String, userModel: UserModel): Either<FailureModel, String>
     suspend fun isUserLogged(): Either<FailureModel, Boolean>
     suspend fun logout()
-//    suspend fun signUpWithPhoneVerification(phoneNumber: String, activity: Activity): Either<String, Unit>
+    suspend fun loginWithGoogle(idToken: String): Either<String, String>
+    suspend fun signUpWithPhoneVerification(phoneNumber: String): Either<String, Unit>
     suspend fun verifyOtpCode(verificationId: String, code: String): Either<String, String>
 }

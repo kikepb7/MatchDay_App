@@ -50,6 +50,14 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
+    // Firebase
+    implementation(project.dependencies.platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.database)
+    implementation(libs.firebase.authentication)
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.google)
+
     // Coil
     implementation(libs.coil.compose)
 

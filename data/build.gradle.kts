@@ -36,6 +36,7 @@ android {
 
 dependencies {
     implementation(project(":domain"))
+    implementation(project(":auth"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -47,6 +48,7 @@ dependencies {
     implementation(libs.firebase.database)
     implementation(libs.firebase.authentication)
     implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.google)
 
     // Room Database
     implementation(libs.room.runtime)
