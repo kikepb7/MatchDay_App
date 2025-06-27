@@ -1,6 +1,6 @@
-package com.example.data.feature.authentication
+package com.example.data.feature.firebase
 
-import com.example.auth.FirebaseAuthService
+import com.example.firebase.FirebaseAuthService
 import com.example.domain.common.Either
 import com.example.domain.common.FailureModel
 import com.example.domain.feature.authentication.repository.AuthRepository
@@ -8,7 +8,7 @@ import com.example.domain.feature.user.model.UserModel
 import com.example.domain.feature.user.repository.UserRepository
 import kotlinx.coroutines.tasks.await
 
-class AuthRepositoryImpl(
+class FirebaseAuthRepositoryImpl(
     private val authService: FirebaseAuthService,
     private val userRepository: UserRepository
 ) : AuthRepository {

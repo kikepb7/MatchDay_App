@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.auth"
+    namespace = "com.example.firebase"
     compileSdk = 36
 
     defaultConfig {
@@ -38,6 +38,7 @@ dependencies {
     implementation(libs.firebase.database)
     implementation(libs.firebase.authentication)
     implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.storage)
     implementation(libs.firebase.google)
     implementation(libs.koin.compose)
     implementation(libs.koin.core)
