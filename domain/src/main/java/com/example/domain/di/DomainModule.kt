@@ -13,20 +13,32 @@ import com.example.domain.feature.player.usecases.RegisterPlayerUseCase
 import com.example.domain.feature.splash.usecases.CheckUserSessionUseCase
 import com.example.domain.feature.user.usecases.GetUserByIdUseCase
 import com.example.domain.feature.user.usecases.RegisterAdminUserCase
+import com.example.domain.feature.user.usecases.UploadUserImageUseCase
 import org.koin.dsl.module
 
 val domainModule = module {
-    factory { RegisterAdminUserCase(get(), get()) }
+
+    // Auth / User registration
     factory { RegisterUserUseCase(get()) }
-    factory { CreateMatchUseCase(get(), get()) }
-    factory { GetClubPlayersUseCase(get()) }
-    factory { GetMatchesUseCase(get()) }
-    factory { AddPlayerToMatchUseCase(get(), get()) }
+    factory { RegisterAdminUserCase(get(), get()) }
     factory { RegisterPlayerUseCase(get(), get()) }
+    factory { RegisterUserWithGoogleUseCase(get()) }
     factory { SignUpEmailPasswordUseCase(get()) }
+
+    // Session
     factory { CheckUserSessionUseCase(get()) }
+    factory { LogoutUseCase(get()) }
+
+    // Image
+    factory { UploadUserImageUseCase(get()) }
+
+    // User / Club queries
     factory { GetUserByIdUseCase(get()) }
     factory { GetClubByIdUseCase(get()) }
-    factory { RegisterUserWithGoogleUseCase(get()) }
-    factory { LogoutUseCase(get()) }
+    factory { GetClubPlayersUseCase(get()) }
+
+    // Match-related
+    factory { CreateMatchUseCase(get(), get()) }
+    factory { GetMatchesUseCase(get()) }
+    factory { AddPlayerToMatchUseCase(get(), get()) }
 }

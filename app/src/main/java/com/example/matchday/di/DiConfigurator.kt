@@ -1,7 +1,7 @@
 package com.example.matchday.di
 
 import android.content.Context
-import com.example.auth.di.authModule
+import com.example.firebase.di.firebaseModule
 import com.example.data.di.dataModule
 import com.example.domain.di.domainModule
 import com.example.ui.di.uiModule
@@ -17,7 +17,7 @@ fun initKoin(appContext: Context, config: KoinAppDeclaration? = null) {
             dataModule,
             domainModule,
             uiModule,
-            authModule
+            firebaseModule
         )
     }
 }

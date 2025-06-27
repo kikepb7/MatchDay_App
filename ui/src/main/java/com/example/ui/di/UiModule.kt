@@ -9,7 +9,7 @@ import com.example.ui.feature.splash.SplashViewModel
 import org.koin.dsl.module
 
 val uiModule = module {
-    viewModel { RegisterViewModel(get(), get(), get()) }
+    viewModel { RegisterViewModel(get(), get(), get(), get()) }
     viewModel { DashboardViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { SignUpViewModel(get(), get(), get()) }
     viewModel { SplashViewModel(get()) }
