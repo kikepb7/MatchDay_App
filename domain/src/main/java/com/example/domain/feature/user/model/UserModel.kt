@@ -10,5 +10,7 @@ data class UserModel(
     val imageUrl: String? = "",
     val playerId: String? = null,
     val clubId: String? = "",
-    val rol: String = "player"
+    val rol: String = "player",
+    val number: Int = 0,
+    val position: String = ""
 )

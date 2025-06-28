@@ -10,5 +10,7 @@ data class UserDto(
     val imageUrl: String? = "",
     val playerId: String? = null,
     val clubId: String? = null,
-    val rol: String = "player"
+    val rol: String = "player",
+    val position: String = "",
+    val number: Int = 0
 )
