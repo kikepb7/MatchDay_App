@@ -87,7 +87,6 @@ fun RegisterScreenView(onSuccessNavigate: (userId: String, clubId: String) -> Un
     var imageUri by remember { mutableStateOf<Uri?>(null) }
     var showImageDialog by remember { mutableStateOf(false) }
     var tempCameraUri by remember { mutableStateOf<Uri?>(null) }
-
     val context = LocalContext.current
 
     val intentCameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) {
@@ -197,30 +196,32 @@ fun RegisterScreenView(onSuccessNavigate: (userId: String, clubId: String) -> Un
 
             PlayerForm(player = player, onPlayerChange = { player = it })
 
-            SubmitButton(isAdmin = isAdmin, onClick = {
-                val userToRegister = user.copy(
-                    password = password,
-                    rol = if (isAdmin) "admin" else "player",
-                    number = player.number,
-                    position = player.position,
-                    imageUrl = imageUri?.toString() ?: user.imageUrl
-                )
-
-                val playerToRegister = player.copy(imageUrl = imageUri?.toString() ?: player.imageUrl)
-
-                imageUri?.let {
-                    registerViewModel.uploadBasicImage(uri = it, context = context)
-                }
-
-                if (isAdmin) {
-                    registerViewModel.registerAdmin(
-                        club = club,
-                        clubMemberModel = ClubMemberModel(user = userToRegister, player = playerToRegister)
+            SubmitButton(
+                isAdmin = isAdmin, onClick = {
+                    val userToRegister = user.copy(
+                        password = password,
+                        rol = if (isAdmin) "admin" else "player",
+                        number = player.number,
+                        position = player.position,
+                        imageUrl = imageUri?.toString() ?: user.imageUrl
                     )
-                } else {
-                    registerViewModel.registerPlayer(user = userToRegister, player = playerToRegister)
+
+                    val playerToRegister = player.copy(imageUrl = imageUri?.toString() ?: player.imageUrl)
+
+                    imageUri?.let {
+                        registerViewModel.uploadBasicImage(uri = it, context = context)
+                    }
+
+                    if (isAdmin) {
+                        registerViewModel.registerAdmin(
+                            club = club,
+                            clubMemberModel = ClubMemberModel(user = userToRegister, player = playerToRegister)
+                        )
+                    } else {
+                        registerViewModel.registerPlayer(user = userToRegister, player = playerToRegister)
+                    }
                 }
-            })
+            )
 
             RegisterStatusMessage(state = registerState, onSuccess = {
                 if (registerState is RegisterState.Success) {
@@ -320,9 +321,10 @@ fun PlayerForm(player: PlayerModel, onPlayerChange: (PlayerModel) -> Unit) {
 }
 
 @Composable
-fun SubmitButton(isAdmin: Boolean, onClick: () -> Unit) {
+fun SubmitButton(isAdmin: Boolean, onClick: () -> Unit, enabled: Boolean = true) {
     Button(
         onClick = onClick,
+        enabled = enabled,
         modifier = Modifier.fillMaxWidth()
     ) {
         Icon(imageVector = Icons.Default.Check, contentDescription = null)

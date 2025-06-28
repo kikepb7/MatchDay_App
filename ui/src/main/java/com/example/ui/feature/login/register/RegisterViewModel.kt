@@ -2,6 +2,7 @@ package com.example.ui.feature.login.register
 
 import android.content.Context
 import android.net.Uri
+import android.os.Build
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.common.Either
@@ -10,6 +11,7 @@ import com.example.domain.feature.club.model.ClubModel
 import com.example.domain.feature.player.model.PlayerModel
 import com.example.domain.feature.player.usecases.RegisterPlayerUseCase
 import com.example.domain.feature.user.model.ClubMemberModel
+import com.example.domain.feature.user.model.ImageMetaDataModel
 import com.example.domain.feature.user.model.UserModel
 import com.example.domain.feature.user.usecases.RegisterAdminUserCase
 import com.example.domain.feature.user.usecases.UploadUserImageUseCase
@@ -17,6 +19,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class RegisterViewModel(
     private val registerUserUseCase: RegisterUserUseCase,
@@ -92,7 +97,17 @@ class RegisterViewModel(
             val inputStream = context.contentResolver.openInputStream(uri)
             val bytes = inputStream?.readBytes() ?: return@launch
 
-            val imageUrl = uploadUserImageUseCase(fileName = fileName, bytes = bytes)
+            val metadata = ImageMetaDataModel(
+                contentType = "image/jpeg",
+                customMetaData = mapOf(
+                    "uploadedAt" to SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault()).format(
+                        Date(System.currentTimeMillis())),
+                    "source" to "${Build.MANUFACTURER} ${Build.MODEL}",
+                    "androidVersion" to Build.VERSION.RELEASE
+                )
+            )
+
+            val imageUrl = uploadUserImageUseCase(fileName = fileName, bytes = bytes, metadata = metadata)
             uploadedImageUrl = imageUrl
         }
     }
