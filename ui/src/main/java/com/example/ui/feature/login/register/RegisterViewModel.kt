@@ -9,6 +9,7 @@ import com.example.domain.feature.authentication.usecases.RegisterUserUseCase
 import com.example.domain.feature.club.model.ClubModel
 import com.example.domain.feature.player.model.PlayerModel
 import com.example.domain.feature.player.usecases.RegisterPlayerUseCase
+import com.example.domain.feature.user.model.ClubMemberModel
 import com.example.domain.feature.user.model.UserModel
 import com.example.domain.feature.user.usecases.RegisterAdminUserCase
 import com.example.domain.feature.user.usecases.UploadUserImageUseCase
@@ -28,18 +29,27 @@ class RegisterViewModel(
     val state = _state.asStateFlow()
     private var uploadedImageUrl: String? = null
 
-    fun registerAdmin(user: UserModel, club: ClubModel) {
+    fun registerAdmin(clubMemberModel: ClubMemberModel, club: ClubModel) {
         viewModelScope.launch {
             _state.value = RegisterState.Loading
+
+            val user = clubMemberModel.user
+            val player = clubMemberModel.player
 
             when (val authResult = registerUserUseCase(user)) {
                 is Either.Success -> {
                     val firebaseUserId = authResult.data
                     val userWithId = user.copy(id = firebaseUserId, imageUrl = uploadedImageUrl)
 
-                    val result = registerAdminUserCase(userWithId, club)
-                    result.getOrNull()?.let { (createdUser, createdClub) ->
-                        _state.value = RegisterState.Success(user = createdUser, club = createdClub)
+                    val playerWithIds = player?.copy(
+                        userId = firebaseUserId,
+                        clubId = club.id ?: "",
+                        imageUrl = uploadedImageUrl
+                    )
+
+                    val result = registerAdminUserCase(user = userWithId, club = club, player = playerWithIds)
+                    result.getOrNull()?.let { (createdUser, createdClub, createdPlayer) ->
+                        _state.value = RegisterState.Success(user = createdUser, club = createdClub, player = createdPlayer)
                     } ?: run {
                         _state.value = RegisterState.Error("Error creando club o usuario.")
                     }

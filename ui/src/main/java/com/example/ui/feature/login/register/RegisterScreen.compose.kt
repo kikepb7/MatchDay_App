@@ -65,6 +65,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.example.domain.feature.club.model.ClubModel
 import com.example.domain.feature.player.model.PlayerModel
+import com.example.domain.feature.user.model.ClubMemberModel
 import com.example.domain.feature.user.model.UserModel
 import org.koin.compose.viewmodel.koinViewModel
 import java.io.File
@@ -154,7 +155,6 @@ fun RegisterScreenView(onSuccessNavigate: (userId: String, clubId: String) -> Un
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            // Imagen en botón flotante
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                 FloatingActionButton(
                     onClick = {
@@ -198,7 +198,15 @@ fun RegisterScreenView(onSuccessNavigate: (userId: String, clubId: String) -> Un
             PlayerForm(player = player, onPlayerChange = { player = it })
 
             SubmitButton(isAdmin = isAdmin, onClick = {
-                val userToRegister = user.copy(password = password, rol = if (isAdmin) "admin" else "player")
+                val userToRegister = user.copy(
+                    password = password,
+                    rol = if (isAdmin) "admin" else "player",
+                    number = player.number,
+                    position = player.position,
+                    imageUrl = imageUri?.toString() ?: user.imageUrl
+                )
+
+                val playerToRegister = player.copy(imageUrl = imageUri?.toString() ?: player.imageUrl)
 
                 imageUri?.let {
                     registerViewModel.uploadBasicImage(uri = it, context = context)
@@ -206,14 +214,11 @@ fun RegisterScreenView(onSuccessNavigate: (userId: String, clubId: String) -> Un
 
                 if (isAdmin) {
                     registerViewModel.registerAdmin(
-                        user = userToRegister,
-                        club = club.copy(adminUserId = listOf(user.id ?: ""))
+                        club = club,
+                        clubMemberModel = ClubMemberModel(user = userToRegister, player = playerToRegister)
                     )
                 } else {
-                    registerViewModel.registerPlayer(
-                        user = userToRegister,
-                        player = player
-                    )
+                    registerViewModel.registerPlayer(user = userToRegister, player = playerToRegister)
                 }
             })
 

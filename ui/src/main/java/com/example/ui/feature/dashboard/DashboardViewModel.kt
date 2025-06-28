@@ -4,13 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.feature.club.model.ClubModel
 import com.example.domain.feature.club.usecases.GetClubByIdUseCase
-import com.example.domain.feature.club.usecases.GetClubPlayersUseCase
 import com.example.domain.feature.match.model.MatchModel
 import com.example.domain.feature.match.usecases.CreateMatchUseCase
 import com.example.domain.feature.match.usecases.GetMatchesUseCase
-import com.example.domain.feature.player.model.PlayerModel
 import com.example.domain.feature.player.usecases.AddPlayerToMatchUseCase
+import com.example.domain.feature.user.model.ClubMemberModel
 import com.example.domain.feature.user.model.UserModel
+import com.example.domain.feature.user.usecases.GetAllClubUsersUseCase
 import com.example.domain.feature.user.usecases.GetUserByIdUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 class DashboardViewModel(
     private val createMatchUseCase: CreateMatchUseCase,
     private val addPlayerToMatchUseCase: AddPlayerToMatchUseCase,
-    private val getClubPlayersUseCase: GetClubPlayersUseCase,
+    private val getAllClubUsersUseCase: GetAllClubUsersUseCase,
     private val getMatchesUseCase: GetMatchesUseCase,
     private val getUserByIdUseCase: GetUserByIdUseCase,
     private val getClubByIdUseCase: GetClubByIdUseCase
@@ -37,13 +37,13 @@ class DashboardViewModel(
                     ?: throw IllegalStateException("Usuario no encontrado")
                 val club = getClubByIdUseCase(clubId).first()
                     ?: throw IllegalStateException("Club no encontrado")
-                val players = getClubPlayersUseCase(clubId).first()
+                val members = getAllClubUsersUseCase(clubId).first()
                 val matches = getMatchesUseCase(clubId).first()
 
                 _state.value = DashboardState.Success(
                     user = user,
                     club = club,
-                    players = players,
+                    members = members,
                     matches = matches
                 )
             } catch (e: Exception) {
@@ -108,7 +108,7 @@ sealed interface DashboardState {
         val user: UserModel,
         val club: ClubModel,
         val matches: List<MatchModel> = emptyList(),
-        val players: List<PlayerModel> = emptyList(),
+        val members: List<ClubMemberModel> = emptyList(),
         val selectedMatchId: String? = null,
         val selectedPlayerId: String? = null,
         val selectedTeam: Team = Team.WHITE,

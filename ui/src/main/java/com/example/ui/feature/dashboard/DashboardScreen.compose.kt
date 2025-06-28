@@ -39,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -46,13 +47,15 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import com.example.domain.feature.club.model.ClubModel
 import com.example.domain.feature.match.model.MatchModel
-import com.example.domain.feature.player.model.PlayerModel
+import com.example.domain.feature.user.model.ClubMemberModel
 import com.example.domain.feature.user.model.UserModel
+import com.example.ui.R
 import com.example.ui.R.drawable as RDrawable
 import com.example.ui.feature.dashboard.provider.mockMatches
-import com.example.ui.feature.dashboard.provider.mockPlayers
 import com.example.ui.feature.login.logout.LogoutState
 import com.example.ui.feature.login.logout.LogoutViewModel
 import com.example.ui.navigation.HomeNavKeys
@@ -61,6 +64,7 @@ import org.koin.compose.viewmodel.koinViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import androidx.core.net.toUri
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -131,9 +135,8 @@ fun DashboardContent(
         item { MatchesSection(state.matches, dashboardViewmodel) }
         item { ActionButtons(user, club, state, dashboardViewmodel) }
         item { SectionTitle("JUGADORES") }
-//        items(state.players) { player ->
-        items(mockPlayers) { player ->
-            PlayerListItem(player = player)
+        items(state.members) { member ->
+            MemberListItem(member = member)
         }
         item { SuccessSnackbar(state.successMessage, dashboardViewmodel) }
     }
@@ -187,7 +190,9 @@ fun ClubHeader(club: ClubModel) {
             AsyncImage(
                 model = logo,
                 contentDescription = "Logo del club",
-                modifier = Modifier.size(64.dp).clip(CircleShape)
+                modifier = Modifier
+                    .size(64.dp)
+                    .clip(CircleShape)
             )
         }
         Spacer(modifier = Modifier.width(16.dp))
@@ -291,7 +296,14 @@ fun MatchCardItem(
 }
 
 @Composable
-fun PlayerListItem(player: PlayerModel, modifier: Modifier = Modifier) {
+fun MemberListItem(member: ClubMemberModel, modifier: Modifier = Modifier) {
+    val user = member.user
+    val player = member.player
+    val imageUrl = player?.imageUrl.takeIf { !it.isNullOrEmpty() } ?: user.imageUrl
+    val encodedUrl = imageUrl?.toUri()?.buildUpon()?.build().toString()
+    val hasImage = !imageUrl.isNullOrEmpty()
+    val position = player?.position?.takeIf { it.isNotBlank() } ?: user.position
+
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -306,19 +318,23 @@ fun PlayerListItem(player: PlayerModel, modifier: Modifier = Modifier) {
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            if (!player.photoUrl.isNullOrEmpty()) {
+            if (hasImage) {
                 AsyncImage(
-                    model = player.photoUrl,
-                    contentDescription = "Foto de ${player.name}",
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(encodedUrl)
+                        .crossfade(true)
+                        .build(),
+                    contentDescription = "Foto de ${user.name}",
                     modifier = Modifier
                         .size(56.dp)
                         .clip(CircleShape),
-                    contentScale = ContentScale.Crop
+                    contentScale = ContentScale.Crop,
+                    placeholder = painterResource(R.drawable.ic_launcher_background)
                 )
             } else {
                 Icon(
                     imageVector = Icons.Default.Person,
-                    contentDescription = "Icono jugador",
+                    contentDescription = "Icono usuario",
                     modifier = Modifier
                         .size(56.dp)
                         .clip(CircleShape),
@@ -330,13 +346,13 @@ fun PlayerListItem(player: PlayerModel, modifier: Modifier = Modifier) {
 
             Column {
                 Text(
-                    text = player.name,
+                    text = "${user.name} ${user.lastName}",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
-                    text = player.position.replaceFirstChar { it.uppercase() },
+                    text = position,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

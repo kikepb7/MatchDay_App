@@ -11,6 +11,7 @@ import com.example.domain.feature.match.usecases.GetMatchesUseCase
 import com.example.domain.feature.player.usecases.AddPlayerToMatchUseCase
 import com.example.domain.feature.player.usecases.RegisterPlayerUseCase
 import com.example.domain.feature.splash.usecases.CheckUserSessionUseCase
+import com.example.domain.feature.user.usecases.GetAllClubUsersUseCase
 import com.example.domain.feature.user.usecases.GetUserByIdUseCase
 import com.example.domain.feature.user.usecases.RegisterAdminUserCase
 import com.example.domain.feature.user.usecases.UploadUserImageUseCase
@@ -20,7 +21,7 @@ val domainModule = module {
 
     // Auth / User registration
     factory { RegisterUserUseCase(get()) }
-    factory { RegisterAdminUserCase(get(), get()) }
+    factory { RegisterAdminUserCase(get(), get(), get()) }
     factory { RegisterPlayerUseCase(get(), get()) }
     factory { RegisterUserWithGoogleUseCase(get()) }
     factory { SignUpEmailPasswordUseCase(get()) }
@@ -36,6 +37,7 @@ val domainModule = module {
     factory { GetUserByIdUseCase(get()) }
     factory { GetClubByIdUseCase(get()) }
     factory { GetClubPlayersUseCase(get()) }
+    factory { GetAllClubUsersUseCase(get(), get(), get()) }
 
     // Match-related
     factory { CreateMatchUseCase(get(), get()) }
