@@ -26,6 +26,7 @@ class RegisterViewModel(
 
     private val _state = MutableStateFlow<RegisterState>(RegisterState.Idle)
     val state = _state.asStateFlow()
+    private var uploadedImageUrl: String? = null
 
     fun registerAdmin(user: UserModel, club: ClubModel) {
         viewModelScope.launch {
@@ -34,16 +35,16 @@ class RegisterViewModel(
             when (val authResult = registerUserUseCase(user)) {
                 is Either.Success -> {
                     val firebaseUserId = authResult.data
-                    val userWithId = user.copy(id = firebaseUserId)
+                    val userWithId = user.copy(id = firebaseUserId, imageUrl = uploadedImageUrl)
 
                     val result = registerAdminUserCase(userWithId, club)
-                    if (result.isSuccess) {
-                        val (createdUser, createdClub) = result.getOrNull()!!
+                    result.getOrNull()?.let { (createdUser, createdClub) ->
                         _state.value = RegisterState.Success(user = createdUser, club = createdClub)
-                    } else {
+                    } ?: run {
                         _state.value = RegisterState.Error("Error creando club o usuario.")
                     }
                 }
+
                 is Either.Error -> {
                     _state.value = RegisterState.Error(authResult.error.toString())
                 }
@@ -57,14 +58,17 @@ class RegisterViewModel(
 
             when (val authResult = registerUserUseCase(user)) {
                 is Either.Success -> {
-                    val result = registerPlayerUserCase(user, player)
-                    if (result.isSuccess) {
-                        val (createdUser, createdPlayer) = result.getOrNull()!!
+                    val firebaseUserId = authResult.data
+                    val userWithId = user.copy(id = firebaseUserId, imageUrl = uploadedImageUrl)
+
+                    val result = registerPlayerUserCase(userWithId, player)
+                    result.getOrNull()?.let { (createdUser, createdPlayer) ->
                         _state.value = RegisterState.Success(user = createdUser, player = createdPlayer)
-                    } else {
+                    } ?: run {
                         _state.value = RegisterState.Error("Error creando jugador.")
                     }
                 }
+
                 is Either.Error -> {
                     _state.value = RegisterState.Error(authResult.error.toString())
                 }
@@ -77,7 +81,9 @@ class RegisterViewModel(
             val fileName = uri.lastPathSegment ?: "default.jpg"
             val inputStream = context.contentResolver.openInputStream(uri)
             val bytes = inputStream?.readBytes() ?: return@launch
-            uploadUserImageUseCase(fileName = fileName, bytes = bytes)
+
+            val imageUrl = uploadUserImageUseCase(fileName = fileName, bytes = bytes)
+            uploadedImageUrl = imageUrl
         }
     }
 }

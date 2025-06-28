@@ -6,13 +6,11 @@ import android.net.Uri
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -56,14 +54,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.core.content.FileProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil3.compose.AsyncImage
 import com.example.domain.feature.club.model.ClubModel
 import com.example.domain.feature.player.model.PlayerModel
 import com.example.domain.feature.user.model.UserModel
@@ -84,24 +83,21 @@ fun RegisterScreenView(onSuccessNavigate: (userId: String, clubId: String) -> Un
     var isAdmin by remember { mutableStateOf(false) }
     var player by remember { mutableStateOf(PlayerModel()) }
     var club by remember { mutableStateOf(ClubModel()) }
-    var uri by remember { mutableStateOf<Uri?>(null) }
+    var imageUri by remember { mutableStateOf<Uri?>(null) }
     var showImageDialog by remember { mutableStateOf(false) }
-    var imageGalleryUri by remember { mutableStateOf<Uri?>(null) }
+    var tempCameraUri by remember { mutableStateOf<Uri?>(null) }
+
     val context = LocalContext.current
 
-
     val intentCameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) {
-        if (it && uri?.path?.isNotEmpty() == true) {
-            uri?.let { uri ->
-                registerViewModel.uploadBasicImage(uri = uri, context = context)
-            }
+        if (it && tempCameraUri != null) {
+            imageUri = tempCameraUri
         }
     }
 
     val intentGalleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { selectedUri ->
-        selectedUri?.let { uri ->
-            imageGalleryUri = uri
-            registerViewModel.uploadBasicImage(uri = uri, context = context)
+        selectedUri?.let {
+            imageUri = it
         }
     }
 
@@ -109,10 +105,8 @@ fun RegisterScreenView(onSuccessNavigate: (userId: String, clubId: String) -> Un
         contract = ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         if (isGranted) {
-            uri = generateUri(context = context)
-            uri?.let { uri ->
-                intentCameraLauncher.launch(uri)
-            }
+            tempCameraUri = generateUri(context = context)
+            tempCameraUri?.let { intentCameraLauncher.launch(it) }
         } else {
             Toast.makeText(context, "Permiso de cámara denegado", Toast.LENGTH_SHORT).show()
         }
@@ -160,26 +154,40 @@ fun RegisterScreenView(onSuccessNavigate: (userId: String, clubId: String) -> Un
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            // Imagen en botón flotante
+            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                 FloatingActionButton(
-                    modifier = Modifier.background(Color.Green),
                     onClick = {
                         showImageDialog = true
-                        cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
                     }
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.Person,
-                        contentDescription = "Imagen jugador",
-                        modifier = Modifier
-                            .size(56.dp)
-                            .clip(CircleShape),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                    if (imageUri != null) {
+                        AsyncImage(
+                            model = imageUri,
+                            contentDescription = "Imagen seleccionada",
+                            modifier = Modifier
+                                .size(56.dp)
+                                .clip(CircleShape),
+                            contentScale = ContentScale.Crop
+                        )
+                    } else {
+                        Icon(
+                            imageVector = Icons.Default.Person,
+                            contentDescription = "Imagen jugador",
+                            modifier = Modifier
+                                .size(56.dp)
+                                .clip(CircleShape),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
                 }
             }
 
-            UserInfoForm(user = user, onUserChange = { user = it }, password = password, onPasswordChange = { password = it })
+            UserInfoForm(
+                user = user,
+                onUserChange = { user = it },
+                password = password,
+                onPasswordChange = { password = it })
 
             RoleSelector(isAdmin = isAdmin, onRoleSelected = { isAdmin = it })
 
@@ -191,6 +199,11 @@ fun RegisterScreenView(onSuccessNavigate: (userId: String, clubId: String) -> Un
 
             SubmitButton(isAdmin = isAdmin, onClick = {
                 val userToRegister = user.copy(password = password, rol = if (isAdmin) "admin" else "player")
+
+                imageUri?.let {
+                    registerViewModel.uploadBasicImage(uri = it, context = context)
+                }
+
                 if (isAdmin) {
                     registerViewModel.registerAdmin(
                         user = userToRegister,

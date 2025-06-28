@@ -7,8 +7,10 @@ class FirebaseStorageService(
     private val storage: FirebaseStorage
 ) {
 
-    suspend fun uploadImage(fileName: String, bytes: ByteArray) {
+    suspend fun uploadImage(fileName: String, bytes: ByteArray): String {
         val reference = storage.reference.child(fileName)
         reference.putBytes(bytes).await()
+
+        return reference.downloadUrl.await().toString()
     }
 }

@@ -7,7 +7,7 @@ class FirebaseStorageRepositoryImpl(
     private val firebaseStorageService: FirebaseStorageService
 ) : UploadImageRepository {
 
-    override suspend fun uploadImage(fileName: String, bytes: ByteArray) {
+    override suspend fun uploadImage(fileName: String, bytes: ByteArray): String? {
         return firebaseStorageService.uploadImage(fileName = fileName, bytes = bytes)
     }
 }
