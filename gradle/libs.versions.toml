@@ -35,6 +35,7 @@ roomCommon = "2.7.2"
 firebaseAuthKtx = "23.2.1"
 pinviewVersion = "1.4.4"
 googleAuthVersion = "21.3.0"
+locationVersion = "21.3.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -92,6 +93,7 @@ room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "
 room-runtime-android = { group = "androidx.room", name = "room-runtime-android", version.ref = "roomCommon" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomCommon" }
 pinview = { module = "io.github.chaosleung:pinview", version.ref = "pinviewVersion" }
+location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "locationVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

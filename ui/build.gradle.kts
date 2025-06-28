@@ -82,6 +82,9 @@ dependencies {
     // Serialization
     implementation(libs.ktor.serialization)
 
+    // Location
+    implementation(libs.location)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
