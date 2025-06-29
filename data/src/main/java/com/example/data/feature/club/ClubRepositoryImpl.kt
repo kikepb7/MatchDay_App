@@ -3,7 +3,7 @@ package com.example.data.feature.club
 import com.example.data.feature.club.dto.ClubDto
 import com.example.data.feature.club.mapper.toClubDto
 import com.example.data.feature.club.mapper.toClubModel
-import com.example.data.firebase.FirebaseDatabaseGenericService
+import com.example.data.feature.firebase.FirebaseDatabaseGenericService
 import com.example.domain.feature.club.model.ClubModel
 import com.example.domain.feature.club.repository.ClubRepository
 import com.google.firebase.database.DatabaseReference

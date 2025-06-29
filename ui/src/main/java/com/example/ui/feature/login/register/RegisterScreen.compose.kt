@@ -1,24 +1,17 @@
 package com.example.ui.feature.login.register
 
-import android.Manifest
-import android.content.Context
 import android.net.Uri
-import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -31,14 +24,11 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.SportsSoccer
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
@@ -53,26 +43,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.core.content.FileProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.example.domain.feature.club.model.ClubModel
 import com.example.domain.feature.player.model.PlayerModel
 import com.example.domain.feature.user.model.ClubMemberModel
 import com.example.domain.feature.user.model.UserModel
+import com.example.ui.components.rememberImagePickerLauncher
 import com.example.ui.feature.analytics.AnalyticsViewModel
 import org.koin.compose.viewmodel.koinViewModel
-import java.io.File
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -87,64 +71,13 @@ fun RegisterScreenView(onSuccessNavigate: (userId: String, clubId: String) -> Un
     var player by remember { mutableStateOf(PlayerModel()) }
     var club by remember { mutableStateOf(ClubModel()) }
     var imageUri by remember { mutableStateOf<Uri?>(null) }
-    var showImageDialog by remember { mutableStateOf(false) }
-    var tempCameraUri by remember { mutableStateOf<Uri?>(null) }
     val context = LocalContext.current
 
+    val (openImagePickerDialog, imagePickerDialog) = rememberImagePickerLauncher {
+        imageUri = it
+    }
+
     LaunchedEffect(Unit) { analyticsViewModel.trackRegisterScreenViewed() }
-
-    val intentCameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) {
-        if (it && tempCameraUri != null) {
-            imageUri = tempCameraUri
-        }
-    }
-
-    val intentGalleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { selectedUri ->
-        selectedUri?.let {
-            imageUri = it
-        }
-    }
-
-    val cameraPermissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        if (isGranted) {
-            tempCameraUri = generateUri(context = context)
-            tempCameraUri?.let { intentCameraLauncher.launch(it) }
-        } else {
-            Toast.makeText(context, "Permiso de cámara denegado", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    if (showImageDialog) {
-        Dialog(onDismissRequest = { showImageDialog = false }) {
-            Card(shape = RoundedCornerShape(12), elevation = CardDefaults.cardElevation(12.dp)) {
-                Column(modifier = Modifier.padding(24.dp)) {
-                    OutlinedButton(
-                        onClick = {
-                            showImageDialog = false
-                            cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
-                        },
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text("Cámara", color = Color.Green)
-                    }
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    OutlinedButton(
-                        onClick = {
-                            showImageDialog = false
-                            intentGalleryLauncher.launch("image/*")
-                        },
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text("Galería", color = Color.Blue)
-                    }
-                }
-            }
-        }
-    }
 
     Scaffold(
         topBar = {
@@ -158,11 +91,11 @@ fun RegisterScreenView(onSuccessNavigate: (userId: String, clubId: String) -> Un
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
+            imagePickerDialog()
+
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                 FloatingActionButton(
-                    onClick = {
-                        showImageDialog = true
-                    }
+                    onClick = { openImagePickerDialog() }
                 ) {
                     if (imageUri != null) {
                         AsyncImage(
@@ -360,22 +293,4 @@ fun RegisterStatusMessage(state: RegisterState, onSuccess: () -> Unit) {
         }
         else -> {}
     }
-}
-
-private fun generateUri(context: Context): Uri {
-    val file = createFile(context = context)
-
-    return FileProvider.getUriForFile(
-        context,
-        "com.example.matchday.provider",
-        file
-    )
-}
-
-private fun createFile(context: Context): File {
-    val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date()) + "image"
-    val imageFileName = "IMG_$timeStamp"
-    val storageDir = context.externalCacheDir ?: context.cacheDir
-
-    return File.createTempFile(imageFileName, ".jpg", storageDir)
 }

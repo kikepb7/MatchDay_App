@@ -3,7 +3,7 @@ package com.example.data.feature.player
 import com.example.data.feature.player.dto.PlayerDto
 import com.example.data.feature.player.mapper.toPlayerDto
 import com.example.data.feature.player.mapper.toPlayerModel
-import com.example.data.firebase.FirebaseDatabaseGenericService
+import com.example.data.feature.firebase.FirebaseDatabaseGenericService
 import com.example.domain.feature.player.model.PlayerModel
 import com.example.domain.feature.player.repository.PlayerRepository
 import com.google.firebase.database.DatabaseReference

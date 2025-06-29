@@ -2,7 +2,7 @@ package com.example.domain.feature.splash.usecases
 
 import com.example.domain.common.Either
 import com.example.domain.common.FailureModel
-import com.example.domain.feature.authentication.repository.AuthRepository
+import com.example.domain.feature.firebase.authentication.repository.AuthRepository
 
 class CheckUserSessionUseCase(private val authRepository: AuthRepository) {
 

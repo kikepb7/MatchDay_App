@@ -6,7 +6,7 @@ import android.os.Build
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.common.Either
-import com.example.domain.feature.authentication.usecases.RegisterUserUseCase
+import com.example.domain.feature.firebase.authentication.usecases.RegisterUserUseCase
 import com.example.domain.feature.club.model.ClubModel
 import com.example.domain.feature.player.model.PlayerModel
 import com.example.domain.feature.player.usecases.RegisterPlayerUseCase

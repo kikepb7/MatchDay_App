@@ -1,6 +1,6 @@
 package com.example.ui.feature.analytics
 
-import com.example.domain.feature.analytics.usecases.LogAnalyticsEventUseCase
+import com.example.domain.feature.firebase.analytics.usecases.LogAnalyticsEventUseCase
 
 class RegisterAnalyticsEventHandler(
     private val logAnalyticsEventUseCase: LogAnalyticsEventUseCase

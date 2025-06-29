@@ -3,7 +3,7 @@ package com.example.data.feature.match
 import com.example.data.feature.match.dto.MatchDto
 import com.example.data.feature.match.mapper.toMatchDto
 import com.example.data.feature.match.mapper.toMatchModel
-import com.example.data.firebase.FirebaseDatabaseGenericService
+import com.example.data.feature.firebase.FirebaseDatabaseGenericService
 import com.example.domain.feature.match.model.MatchModel
 import com.example.domain.feature.match.repository.MatchRepository
 import com.google.firebase.database.DatabaseReference

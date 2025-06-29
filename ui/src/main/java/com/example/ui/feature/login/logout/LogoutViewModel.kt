@@ -2,7 +2,7 @@ package com.example.ui.feature.login.logout
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.feature.authentication.usecases.LogoutUseCase
+import com.example.domain.feature.firebase.authentication.usecases.LogoutUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

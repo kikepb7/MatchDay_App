@@ -3,7 +3,7 @@ package com.example.data.feature.statistics
 import com.example.data.feature.statistics.dto.StatisticDto
 import com.example.data.feature.statistics.mapper.toStatisticDto
 import com.example.data.feature.statistics.mapper.toStatisticModel
-import com.example.data.firebase.FirebaseDatabaseGenericService
+import com.example.data.feature.firebase.FirebaseDatabaseGenericService
 import com.example.domain.feature.statistics.model.StatisticModel
 import com.example.domain.feature.statistics.repository.StatisticsRepository
 import com.google.firebase.database.DatabaseReference

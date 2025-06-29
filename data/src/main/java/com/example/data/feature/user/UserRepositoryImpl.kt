@@ -3,7 +3,7 @@ package com.example.data.feature.user
 import com.example.data.feature.user.dto.UserDto
 import com.example.data.feature.user.mapper.toUserDto
 import com.example.data.feature.user.mapper.toUserModel
-import com.example.data.firebase.FirebaseDatabaseGenericService
+import com.example.data.feature.firebase.FirebaseDatabaseGenericService
 import com.example.domain.feature.user.model.UserModel
 import com.example.domain.feature.user.repository.UserRepository
 import com.google.firebase.database.DatabaseReference

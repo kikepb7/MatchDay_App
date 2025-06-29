@@ -3,8 +3,8 @@ package com.example.ui.feature.login.signup
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.common.Either
-import com.example.domain.feature.authentication.usecases.RegisterUserWithGoogleUseCase
-import com.example.domain.feature.authentication.usecases.SignUpEmailPasswordUseCase
+import com.example.domain.feature.firebase.authentication.usecases.RegisterUserWithGoogleUseCase
+import com.example.domain.feature.firebase.authentication.usecases.SignUpEmailPasswordUseCase
 import com.example.domain.feature.user.usecases.GetUserByIdUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
