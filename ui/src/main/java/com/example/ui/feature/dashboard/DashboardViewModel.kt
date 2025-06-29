@@ -4,6 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.feature.club.model.ClubModel
 import com.example.domain.feature.club.usecases.GetClubByIdUseCase
+import com.example.domain.feature.firebase.notification.usecases.IsSubscribedToMatchTopicUseCase
+import com.example.domain.feature.firebase.notification.usecases.SubscribeToMatchTopicUseCase
+import com.example.domain.feature.firebase.notification.usecases.UnsubscribeFromMatchTopicUseCase
 import com.example.domain.feature.match.model.MatchModel
 import com.example.domain.feature.match.usecases.CreateMatchUseCase
 import com.example.domain.feature.match.usecases.GetMatchesUseCase
@@ -24,7 +27,10 @@ class DashboardViewModel(
     private val getAllClubUsersUseCase: GetAllClubUsersUseCase,
     private val getMatchesUseCase: GetMatchesUseCase,
     private val getUserByIdUseCase: GetUserByIdUseCase,
-    private val getClubByIdUseCase: GetClubByIdUseCase
+    private val getClubByIdUseCase: GetClubByIdUseCase,
+    private val subscribeToMatchTopicUseCase: SubscribeToMatchTopicUseCase,
+    private val unsubscribeFromMatchTopicUseCase: UnsubscribeFromMatchTopicUseCase,
+    private val isSubscribedToMatchTopicUseCase: IsSubscribedToMatchTopicUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<DashboardState>(DashboardState.Loading)
@@ -100,6 +106,33 @@ class DashboardViewModel(
             _state.value = currentState.copy(successMessage = null)
         }
     }
+
+    fun checkMatchNotifications() {
+        viewModelScope.launch {
+            val enabled = isSubscribedToMatchTopicUseCase()
+            val currentState = _state.value
+            if (currentState is DashboardState.Success) {
+                _state.value = currentState.copy(notificationsEnabled = enabled)
+            }
+        }
+    }
+
+    fun toggleMatchNotifications(enabled: Boolean) {
+        viewModelScope.launch {
+            val result = if (enabled) {
+                subscribeToMatchTopicUseCase()
+            } else {
+                unsubscribeFromMatchTopicUseCase()
+            }
+
+            if (result.isSuccess) {
+                val currentState = _state.value
+                if (currentState is DashboardState.Success) {
+                    _state.value = currentState.copy(notificationsEnabled = enabled)
+                }
+            }
+        }
+    }
 }
 
 sealed interface DashboardState {
@@ -112,7 +145,8 @@ sealed interface DashboardState {
         val selectedMatchId: String? = null,
         val selectedPlayerId: String? = null,
         val selectedTeam: Team = Team.WHITE,
-        val successMessage: String? = null
+        val successMessage: String? = null,
+        val notificationsEnabled: Boolean = false
     ) : DashboardState
 
     data class Error(val message: String) : DashboardState

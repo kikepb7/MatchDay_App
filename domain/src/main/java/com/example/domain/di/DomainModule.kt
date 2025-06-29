@@ -1,12 +1,15 @@
 package com.example.domain.di
 
-import com.example.domain.feature.analytics.usecases.LogAnalyticsEventUseCase
-import com.example.domain.feature.authentication.usecases.LogoutUseCase
-import com.example.domain.feature.authentication.usecases.RegisterUserUseCase
-import com.example.domain.feature.authentication.usecases.RegisterUserWithGoogleUseCase
-import com.example.domain.feature.authentication.usecases.SignUpEmailPasswordUseCase
+import com.example.domain.feature.firebase.analytics.usecases.LogAnalyticsEventUseCase
+import com.example.domain.feature.firebase.authentication.usecases.LogoutUseCase
+import com.example.domain.feature.firebase.authentication.usecases.RegisterUserUseCase
+import com.example.domain.feature.firebase.authentication.usecases.RegisterUserWithGoogleUseCase
+import com.example.domain.feature.firebase.authentication.usecases.SignUpEmailPasswordUseCase
 import com.example.domain.feature.club.usecases.GetClubByIdUseCase
 import com.example.domain.feature.club.usecases.GetClubPlayersUseCase
+import com.example.domain.feature.firebase.notification.usecases.IsSubscribedToMatchTopicUseCase
+import com.example.domain.feature.firebase.notification.usecases.SubscribeToMatchTopicUseCase
+import com.example.domain.feature.firebase.notification.usecases.UnsubscribeFromMatchTopicUseCase
 import com.example.domain.feature.match.usecases.CreateMatchUseCase
 import com.example.domain.feature.match.usecases.GetMatchesUseCase
 import com.example.domain.feature.player.usecases.AddPlayerToMatchUseCase
@@ -45,4 +48,9 @@ val domainModule = module {
     factory { CreateMatchUseCase(get(), get()) }
     factory { GetMatchesUseCase(get()) }
     factory { AddPlayerToMatchUseCase(get(), get()) }
+
+    // Notifications
+    factory { IsSubscribedToMatchTopicUseCase(get()) }
+    factory { SubscribeToMatchTopicUseCase(get()) }
+    factory { UnsubscribeFromMatchTopicUseCase(get()) }
 }

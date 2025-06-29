@@ -13,12 +13,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.ui.feature.notifications.NotificationPermissionRequest
 
 @Composable
 fun LoginScreenView(
     onSignUpClick: () -> Unit,
     onRegisterClick: () -> Unit
 ) {
+    NotificationPermissionRequest()
+
     Column(
         modifier = Modifier
             .fillMaxSize()

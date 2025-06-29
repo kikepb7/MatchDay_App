@@ -1,5 +1,6 @@
 package com.example.ui.di
 
+import com.example.ui.feature.analytics.AnalyticsViewModel
 import com.example.ui.feature.dashboard.DashboardViewModel
 import com.example.ui.feature.login.logout.LogoutViewModel
 import org.koin.core.module.dsl.viewModel
@@ -11,9 +12,10 @@ import org.koin.dsl.module
 
 val uiModule = module {
     viewModel { RegisterViewModel(get(), get(), get(), get()) }
-    viewModel { DashboardViewModel(get(), get(), get(), get(), get(), get()) }
+    viewModel { DashboardViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { SignUpViewModel(get(), get(), get()) }
     viewModel { SplashViewModel(get()) }
+    viewModel { AnalyticsViewModel(get()) }
     viewModel { LogoutViewModel(get()) }
 
     factory { RegisterAnalyticsEventHandler(get()) }

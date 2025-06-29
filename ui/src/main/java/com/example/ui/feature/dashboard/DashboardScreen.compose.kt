@@ -29,6 +29,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -73,12 +74,12 @@ fun DashboardScreenView(
     clubId: String,
     backStack: NavBackStack
 ) {
-    val dashboardViewmodel = koinViewModel<DashboardViewModel>()
-    val dashboardState by dashboardViewmodel.state.collectAsStateWithLifecycle()
+    val dashboardViewModel = koinViewModel<DashboardViewModel>()
+    val dashboardState by dashboardViewModel.state.collectAsStateWithLifecycle()
     val logoutViewModel = koinViewModel<LogoutViewModel>()
     val logoutState by logoutViewModel.state.collectAsStateWithLifecycle()
 
-    LaunchedEffect(Unit) { dashboardViewmodel.loadData(userId = userId, clubId = clubId) }
+    LaunchedEffect(Unit) { dashboardViewModel.loadData(userId = userId, clubId = clubId) }
     LaunchedEffect(logoutState) {
         if (logoutState is LogoutState.Success) {
             backStack.clear()
@@ -132,6 +133,12 @@ fun DashboardContent(
     ) {
         item { ClubHeader(club) }
         item { SectionTitle("PARTIDOS JUGADOS") }
+        item {
+            NotificationSwitchRow(
+                isEnabled = state.notificationsEnabled,
+                toggleMatchNotifications = { dashboardViewmodel.toggleMatchNotifications(it) }
+            )
+        }
         item { MatchesSection(state.matches, dashboardViewmodel) }
         item { ActionButtons(user, club, state, dashboardViewmodel) }
         item { SectionTitle("JUGADORES") }
@@ -420,6 +427,28 @@ fun SuccessSnackbar(message: String?, viewModel: DashboardViewModel) {
         Snackbar(modifier = Modifier.padding(16.dp)) {
             Text(text = message)
         }
+    }
+}
+
+@Composable
+fun NotificationSwitchRow(isEnabled: Boolean, toggleMatchNotifications: (Boolean) -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = "Recibir notificaciones de partidos",
+            style = MaterialTheme.typography.bodyLarge,
+            fontWeight = FontWeight.Medium
+        )
+
+        Switch(
+            checked = isEnabled,
+            onCheckedChange = { toggleMatchNotifications(it) }
+        )
     }
 }
 
