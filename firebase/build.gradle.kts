@@ -34,12 +34,13 @@ android {
 
 dependencies {
     implementation(project.dependencies.platform(libs.firebase.bom))
-    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.google)
     implementation(libs.firebase.database)
     implementation(libs.firebase.authentication)
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.storage)
-    implementation(libs.firebase.google)
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.notifications)
     implementation(libs.koin.compose)
     implementation(libs.koin.core)
     implementation(libs.koin.compose.viewmodel)

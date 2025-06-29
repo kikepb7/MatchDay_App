@@ -79,6 +79,7 @@ dependencies {
     implementation(project.dependencies.platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.database)
+    implementation(libs.firebase.notifications)
 
     // Icons
     implementation(libs.androidx.material.icons.extended)
