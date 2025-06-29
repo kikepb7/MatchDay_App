@@ -1,4 +1,4 @@
-package com.example.domain.feature.analytics.model
+package com.example.domain.feature.firebase.analytics.model
 
 data class AnalyticModel(
     val title: String,

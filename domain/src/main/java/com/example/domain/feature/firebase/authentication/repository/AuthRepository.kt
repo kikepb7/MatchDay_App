@@ -1,4 +1,4 @@
-package com.example.domain.feature.authentication.repository
+package com.example.domain.feature.firebase.authentication.repository
 
 import com.example.domain.common.Either
 import com.example.domain.common.FailureModel

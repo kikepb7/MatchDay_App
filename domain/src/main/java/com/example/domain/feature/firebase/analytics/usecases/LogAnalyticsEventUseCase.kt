@@ -1,6 +1,6 @@
-package com.example.domain.feature.analytics.usecases
+package com.example.domain.feature.firebase.analytics.usecases
 
-import com.example.domain.feature.analytics.repository.AnalyticsRepository
+import com.example.domain.feature.firebase.analytics.repository.AnalyticsRepository
 
 class LogAnalyticsEventUseCase(
     private val analyticsRepository: AnalyticsRepository
