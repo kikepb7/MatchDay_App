@@ -7,8 +7,9 @@ data class ClubDto(
     val name: String = "",
     val description: String = "",
     val createdAt: Long = Calendar.getInstance().timeInMillis,
-    val adminUSerId: List<String> = emptyList(),
+    val adminUserId: List<String> = emptyList(),
     val inviteCode: String = "",
     val logoUrl: String? = null,
-    val members: List<String> = emptyList()
+    val memberPlayersIds: List<String> = emptyList(),
+    val location: String? = null
 )

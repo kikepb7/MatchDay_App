@@ -10,5 +10,6 @@ data class ClubModel(
     val adminUserId: List<String> = emptyList(),
     val inviteCode: String = "",
     val logoUrl: String? = null,
-    val members: List<String> = emptyList()
+    val memberPlayersIds: List<String> = emptyList(),
+    val location: String? = null
 )

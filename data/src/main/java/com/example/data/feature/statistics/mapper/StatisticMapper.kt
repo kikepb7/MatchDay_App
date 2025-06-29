@@ -14,7 +14,8 @@ fun StatisticDto.toStatisticModel(): StatisticModel =
         yellowCards = yellowCards,
         redCards = redCards,
         goalsConceded = goalsConceded,
-        clubId = clubId
+        clubId = clubId,
+        createdAt = createdAt
     )
 
 fun StatisticModel.toStatisticDto(): StatisticDto =
@@ -28,5 +29,6 @@ fun StatisticModel.toStatisticDto(): StatisticDto =
         yellowCards = yellowCards,
         redCards = redCards,
         goalsConceded = goalsConceded,
-        clubId = clubId
+        clubId = clubId,
+        createdAt = createdAt
     )

@@ -10,7 +10,8 @@ data class UserModel(
     val imageUrl: String? = "",
     val playerId: String? = null,
     val clubId: String? = "",
-    val rol: String = "player",
-    val number: Int = 0,
-    val position: String = ""
+    val role: String = "player",
+    val position: String = "",
+    val number: Int? = null,
+    val createdAt: Long? = null
 )

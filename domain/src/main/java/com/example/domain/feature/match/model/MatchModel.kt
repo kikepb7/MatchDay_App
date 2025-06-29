@@ -10,5 +10,8 @@ data class MatchModel(
     val blueTeamGoals: Int = 0,
     val mvpId: String? = null,
     val isFinalized: Boolean = false,
-    val clubId: String? = null
+    val clubId: String? = null,
+    val createdByUserId: String? = null,
+    val location: String? = null,
+    val notes: String? = null
 )

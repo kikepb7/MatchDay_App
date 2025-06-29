@@ -8,5 +8,7 @@ data class PlayerDto(
     val imageUrl: String? = null,
     val userId: String? = null,
     val clubId: String? = null,
-    val isActive: Boolean = true
+    val isActive: Boolean = true,
+    val birthDate: Long? = null,
+    val joinedAt: Long? = null
 )

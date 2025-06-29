@@ -9,10 +9,11 @@ fun ClubDto.toClubModel(): ClubModel =
         name = name,
         description = description,
         createdAt = createdAt,
-        adminUserId = adminUSerId,
+        adminUserId = adminUserId,
         inviteCode = inviteCode,
         logoUrl = logoUrl,
-        members = members
+        memberPlayersIds = memberPlayersIds,
+        location = location
     )
 
 fun ClubModel.toClubDto(): ClubDto =
@@ -21,8 +22,9 @@ fun ClubModel.toClubDto(): ClubDto =
         name = name,
         description = description,
         createdAt = createdAt,
-        adminUSerId = adminUserId,
+        adminUserId = adminUserId,
         inviteCode = inviteCode,
         logoUrl = logoUrl,
-        members = members
+        memberPlayersIds = memberPlayersIds,
+        location = location
     )

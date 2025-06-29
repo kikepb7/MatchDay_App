@@ -41,6 +41,7 @@ dependencies {
     implementation(libs.firebase.storage)
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.notifications)
+    implementation(libs.firebase.firestore)
     implementation(libs.koin.compose)
     implementation(libs.koin.core)
     implementation(libs.koin.compose.viewmodel)

@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.google)
     implementation(libs.firebase.storage)
+    implementation(libs.firebase.firestore)
 
     // Room Database
     implementation(libs.room.runtime)

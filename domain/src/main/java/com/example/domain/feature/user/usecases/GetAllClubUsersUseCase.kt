@@ -17,7 +17,7 @@ class GetAllClubUsersUseCase(
         userRepository.getAllUsers(),
         playerRepository.getAllPlayers()
     ) { club, users, players ->
-        val membersIds = club?.members.orEmpty()
+        val membersIds = club?.memberPlayersIds.orEmpty()
         val playersByUserId = players.associateBy { it.userId }
 
         users

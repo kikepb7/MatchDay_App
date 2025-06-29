@@ -19,7 +19,7 @@ class RegisterPlayerUseCase(
         val playerToCreate = player.copy(id = playerId, userId = userId)
         playerRepository.createPlayer(player)
 
-        val userToCreate = user.copy(id = userId, rol = "player", clubId = player.clubId, playerId = playerId)
+        val userToCreate = user.copy(id = userId, role = "player", clubId = player.clubId, playerId = playerId)
         userRepository.createUser(userToCreate)
 
         Result.success(userToCreate to playerToCreate)

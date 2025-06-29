@@ -41,7 +41,7 @@ class RegisterAdminUserCase(
                 imageUrl = user.imageUrl,
                 playerId = user.playerId,
                 position = user.position,
-                rol = user.rol
+                role = user.role
             )
 
             val initialClub = club.copy(
@@ -77,7 +77,7 @@ class RegisterAdminUserCase(
 
             val updatedClub = initialClub.copy(
                 adminUserId = listOf(userId),
-                members = listOf(userId)
+                memberPlayersIds = listOf(userId)
             )
 
             clubRepository.updateClub(clubId, updatedClub)

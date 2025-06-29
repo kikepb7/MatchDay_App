@@ -381,7 +381,7 @@ fun ActionButtons(
             .padding(horizontal = 16.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        if (user.rol == "admin") {
+        if (user.role == "admin") {
             Button(
                 onClick = {
                     viewModel.createMatch(

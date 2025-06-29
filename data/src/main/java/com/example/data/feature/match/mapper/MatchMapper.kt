@@ -13,8 +13,11 @@ fun MatchDto.toMatchModel(): MatchModel =
         whiteTeamGoals = whiteTeamGoals,
         blueTeamGoals = blueTeamGoals,
         mvpId = mvpId,
+        isFinalized = isFinalized,
         clubId = clubId,
-        isFinalized = isFinalized
+        createdByUserId = createdByUserId,
+        location = location,
+        notes = notes
     )
 
 fun MatchModel.toMatchDto(): MatchDto =
@@ -27,6 +30,9 @@ fun MatchModel.toMatchDto(): MatchDto =
         whiteTeamGoals = whiteTeamGoals,
         blueTeamGoals = blueTeamGoals,
         mvpId = mvpId,
+        isFinalized = isFinalized,
         clubId = clubId,
-        isFinalized = isFinalized
+        createdByUserId = createdByUserId,
+        location = location,
+        notes = notes
     )

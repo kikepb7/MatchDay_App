@@ -12,7 +12,9 @@ fun PlayerDto.toPlayerModel(): PlayerModel =
         imageUrl = imageUrl,
         userId = userId,
         clubId = clubId,
-        isActive = isActive
+        isActive = isActive,
+        birthDate = birthDate,
+        joinedAt = joinedAt
     )
 
 fun PlayerModel.toPlayerDto(): PlayerDto = PlayerDto(
@@ -23,5 +25,7 @@ fun PlayerModel.toPlayerDto(): PlayerDto = PlayerDto(
     imageUrl = imageUrl,
     userId = userId,
     clubId = clubId,
-    isActive = isActive
+    isActive = isActive,
+    birthDate = birthDate,
+    joinedAt = joinedAt
 )

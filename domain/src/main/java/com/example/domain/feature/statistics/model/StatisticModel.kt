@@ -9,6 +9,7 @@ data class StatisticModel(
     val minutesPlayed: Int = 0,
     val yellowCards: Int = 0,
     val redCards: Int = 0,
-    val goalsConceded: Int = 0,
-    val clubId: String? = null
+    val goalsConceded: Int? = null,
+    val clubId: String? = null,
+    val createdAt: Long? = null
 )

@@ -14,7 +14,7 @@ class CreateMatchUseCase(
     suspend fun invoke(userId: String, matchNumber: Int, date: Long): Result<Unit> {
         val user = userRepository.getUserById(userId = userId).firstOrNull()
 
-        return if (user != null && user.rol == "admin") {
+        return if (user != null && user.role == "admin") {
             val match = MatchModel(
                 id = UUID.randomUUID().toString(),
                 number = matchNumber,

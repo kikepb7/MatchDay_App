@@ -14,9 +14,10 @@ fun UserDto.toUserModel(): UserModel =
         imageUrl = imageUrl,
         playerId = playerId,
         clubId = clubId,
-        rol = rol,
+        role = role,
         position = position,
-        number = number
+        number = number,
+        createdAt = createdAt
     )
 
 fun UserModel.toUserDto(): UserDto =
@@ -30,7 +31,8 @@ fun UserModel.toUserDto(): UserDto =
         imageUrl = imageUrl,
         playerId = playerId,
         clubId = clubId,
-        rol = rol,
+        role = role,
         position = position,
-        number = number
+        number = number,
+        createdAt = createdAt
     )

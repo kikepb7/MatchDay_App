@@ -140,7 +140,7 @@ fun RegisterScreenView(onSuccessNavigate: (userId: String, clubId: String) -> Un
 
                     val userToRegister = user.copy(
                         password = password,
-                        rol = if (isAdmin) "admin" else "player",
+                        role = if (isAdmin) "admin" else "player",
                         number = player.number,
                         position = player.position,
                         imageUrl = imageUri?.toString() ?: user.imageUrl
