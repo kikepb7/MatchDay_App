@@ -2,11 +2,13 @@ package com.example.data.di
 
 import com.example.data.feature.firebase.FirebaseAuthRepositoryImpl
 import com.example.data.feature.club.ClubRepositoryImpl
+import com.example.data.feature.firebase.FirebaseAnalyticsRepositoryImpl
 import com.example.data.feature.firebase.FirebaseStorageRepositoryImpl
 import com.example.data.feature.match.MatchRepositoryImpl
 import com.example.data.feature.player.PlayerRepositoryImpl
 import com.example.data.feature.statistics.StatisticsRepositoryImpl
 import com.example.data.feature.user.UserRepositoryImpl
+import com.example.domain.feature.analytics.repository.AnalyticsRepository
 import com.example.domain.feature.authentication.repository.AuthRepository
 import com.example.domain.feature.club.repository.ClubRepository
 import com.example.domain.feature.match.repository.MatchRepository
@@ -35,5 +37,6 @@ val dataModule = module {
     factory<MatchRepository> { MatchRepositoryImpl(get()) }
     factory<StatisticsRepository> { StatisticsRepositoryImpl(get()) }
     factory<ClubRepository> { ClubRepositoryImpl(get()) }
+    factory<AnalyticsRepository> { FirebaseAnalyticsRepositoryImpl(get()) }
     factory<AuthRepository> { FirebaseAuthRepositoryImpl(get(), get()) }
 }

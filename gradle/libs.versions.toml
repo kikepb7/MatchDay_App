@@ -36,6 +36,7 @@ firebaseAuthKtx = "23.2.1"
 pinviewVersion = "1.4.4"
 googleAuthVersion = "21.3.0"
 locationVersion = "21.3.0"
+crashlyticsVersion = "3.0.4"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -55,6 +56,7 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "googleFirebase" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
 firebase-database = { group = "com.google.firebase", name = "firebase-database-ktx" }
 firebase-authentication = { group = "com.google.firebase", name = "firebase-auth-ktx" }
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
@@ -105,3 +107,4 @@ room = { id = "androidx.room", version.ref = "roomCommon" }
 jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinSerialization" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlyticsVersion" }

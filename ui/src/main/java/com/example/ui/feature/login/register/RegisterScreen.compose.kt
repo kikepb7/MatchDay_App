@@ -67,6 +67,7 @@ import com.example.domain.feature.club.model.ClubModel
 import com.example.domain.feature.player.model.PlayerModel
 import com.example.domain.feature.user.model.ClubMemberModel
 import com.example.domain.feature.user.model.UserModel
+import com.example.ui.feature.analytics.AnalyticsViewModel
 import org.koin.compose.viewmodel.koinViewModel
 import java.io.File
 import java.text.SimpleDateFormat
@@ -78,6 +79,7 @@ import java.util.Locale
 fun RegisterScreenView(onSuccessNavigate: (userId: String, clubId: String) -> Unit) {
 
     val registerViewModel = koinViewModel<RegisterViewModel>()
+    val analyticsViewModel = koinViewModel<AnalyticsViewModel>()
     val registerState by registerViewModel.state.collectAsStateWithLifecycle()
     var user by remember { mutableStateOf(UserModel()) }
     var password by remember { mutableStateOf("") }
@@ -88,6 +90,8 @@ fun RegisterScreenView(onSuccessNavigate: (userId: String, clubId: String) -> Un
     var showImageDialog by remember { mutableStateOf(false) }
     var tempCameraUri by remember { mutableStateOf<Uri?>(null) }
     val context = LocalContext.current
+
+    LaunchedEffect(Unit) { analyticsViewModel.trackRegisterScreenViewed() }
 
     val intentCameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) {
         if (it && tempCameraUri != null) {
@@ -197,7 +201,10 @@ fun RegisterScreenView(onSuccessNavigate: (userId: String, clubId: String) -> Un
             PlayerForm(player = player, onPlayerChange = { player = it })
 
             SubmitButton(
-                isAdmin = isAdmin, onClick = {
+                isAdmin = isAdmin,
+                onClick = {
+                    analyticsViewModel.trackRegisterAttempt(isAdmin)
+
                     val userToRegister = user.copy(
                         password = password,
                         rol = if (isAdmin) "admin" else "player",
@@ -223,14 +230,21 @@ fun RegisterScreenView(onSuccessNavigate: (userId: String, clubId: String) -> Un
                 }
             )
 
-            RegisterStatusMessage(state = registerState, onSuccess = {
-                if (registerState is RegisterState.Success) {
-                    val successState = registerState as RegisterState.Success
-                    val userId = successState.user.id.orEmpty()
-                    val clubId = successState.club?.id.orEmpty()
-                    onSuccessNavigate(userId, clubId)
+            RegisterStatusMessage(
+                state = registerState,
+                onSuccess = {
+                    if (registerState is RegisterState.Success) {
+                        val successState = registerState as RegisterState.Success
+                        analyticsViewModel.trackRegisterSuccess(successState.user.id.orEmpty())
+                        val userId = successState.user.id.orEmpty()
+                        val clubId = successState.club?.id.orEmpty()
+                        onSuccessNavigate(userId, clubId)
+                    }
+                    if (registerState is RegisterState.Error) {
+                        analyticsViewModel.trackRegisterFailure((registerState as RegisterState.Error).message)
+                    }
                 }
-            })
+            )
         }
     }
 }

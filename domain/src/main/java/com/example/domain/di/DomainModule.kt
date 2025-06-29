@@ -1,5 +1,6 @@
 package com.example.domain.di
 
+import com.example.domain.feature.analytics.usecases.LogAnalyticsEventUseCase
 import com.example.domain.feature.authentication.usecases.LogoutUseCase
 import com.example.domain.feature.authentication.usecases.RegisterUserUseCase
 import com.example.domain.feature.authentication.usecases.RegisterUserWithGoogleUseCase
@@ -25,6 +26,7 @@ val domainModule = module {
     factory { RegisterPlayerUseCase(get(), get()) }
     factory { RegisterUserWithGoogleUseCase(get()) }
     factory { SignUpEmailPasswordUseCase(get()) }
+    factory { LogAnalyticsEventUseCase(get()) }
 
     // Session
     factory { CheckUserSessionUseCase(get()) }
