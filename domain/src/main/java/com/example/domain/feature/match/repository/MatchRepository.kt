@@ -7,6 +7,6 @@ interface MatchRepository {
     suspend fun createMatch(match: MatchModel): String
     fun getMatchById(matchId: String): Flow<MatchModel?>
     fun getAllMatches(): Flow<List<MatchModel>>
-    fun updateMatch(matchId: String, match: MatchModel)
-    fun deleteMatch(matchId: String)
+    suspend fun updateMatch(matchId: String, match: MatchModel)
+    suspend fun deleteMatch(matchId: String)
 }

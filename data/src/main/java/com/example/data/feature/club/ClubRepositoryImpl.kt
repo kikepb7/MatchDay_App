@@ -6,20 +6,23 @@ import com.example.data.feature.club.mapper.toClubModel
 import com.example.data.feature.firebase.FirebaseDatabaseGenericService
 import com.example.domain.feature.club.model.ClubModel
 import com.example.domain.feature.club.repository.ClubRepository
+import com.example.firebase.firestore.FirebaseFirestoreGenericService
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class ClubRepositoryImpl(private val reference: DatabaseReference
+class ClubRepositoryImpl(
+    private val firestore: FirebaseFirestore
 ) : ClubRepository {
 
     companion object {
         const val CLUB_PATH = "clubs"
     }
 
-    private val service = FirebaseDatabaseGenericService(
-        reference = reference,
-        basePath = CLUB_PATH,
+    private val service = FirebaseFirestoreGenericService(
+        firestore = firestore,
+        collectionPath = CLUB_PATH,
         clazz = ClubDto::class.java
     )
 

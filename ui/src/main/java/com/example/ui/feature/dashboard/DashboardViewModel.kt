@@ -118,7 +118,7 @@ class DashboardViewModel(
     }
 
     fun toggleMatchNotifications(enabled: Boolean) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val result = if (enabled) {
                 subscribeToMatchTopicUseCase()
             } else {

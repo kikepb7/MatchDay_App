@@ -3,24 +3,24 @@ package com.example.data.feature.match
 import com.example.data.feature.match.dto.MatchDto
 import com.example.data.feature.match.mapper.toMatchDto
 import com.example.data.feature.match.mapper.toMatchModel
-import com.example.data.feature.firebase.FirebaseDatabaseGenericService
 import com.example.domain.feature.match.model.MatchModel
 import com.example.domain.feature.match.repository.MatchRepository
-import com.google.firebase.database.DatabaseReference
+import com.example.firebase.firestore.FirebaseFirestoreGenericService
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class MatchRepositoryImpl(
-    private val reference: DatabaseReference
+    private val firestore: FirebaseFirestore
 ) : MatchRepository{
 
     companion object {
         const val MATCH_PATH = "matches"
     }
 
-    private val service = FirebaseDatabaseGenericService(
-        reference = reference,
-        basePath = MATCH_PATH,
+    private val service = FirebaseFirestoreGenericService(
+        firestore = firestore,
+        collectionPath = MATCH_PATH,
         clazz = MatchDto::class.java
     )
 
@@ -30,8 +30,8 @@ class MatchRepositoryImpl(
 
     override fun getAllMatches(): Flow<List<MatchModel>> = service.getAllItems().map { list -> list.map { it.toMatchModel() } }
 
-    override fun updateMatch(matchId: String, match: MatchModel) = service.updateItem(id = matchId, item = match.toMatchDto())
+    override suspend fun updateMatch(matchId: String, match: MatchModel) = service.updateItem(id = matchId, item = match.toMatchDto())
 
-    override fun deleteMatch(matchId: String) = service.deleteItem(id = matchId)
+    override suspend fun deleteMatch(matchId: String) = service.deleteItem(id = matchId)
 
 }

@@ -7,6 +7,6 @@ interface PlayerRepository {
     suspend fun createPlayer(player: PlayerModel): String
     fun getAllPlayers(): Flow<List<PlayerModel>>
     fun getPlayerById(playerId: String): Flow<PlayerModel?>
-    fun updatePlayer(playerId: String, player: PlayerModel)
-    fun deletePlayer(playerId: String)
+    suspend fun updatePlayer(playerId: String, player: PlayerModel)
+    suspend fun deletePlayer(playerId: String)
 }

@@ -3,24 +3,24 @@ package com.example.data.feature.user
 import com.example.data.feature.user.dto.UserDto
 import com.example.data.feature.user.mapper.toUserDto
 import com.example.data.feature.user.mapper.toUserModel
-import com.example.data.feature.firebase.FirebaseDatabaseGenericService
 import com.example.domain.feature.user.model.UserModel
 import com.example.domain.feature.user.repository.UserRepository
-import com.google.firebase.database.DatabaseReference
+import com.example.firebase.firestore.FirebaseFirestoreGenericService
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class UserRepositoryImpl(
-    private val reference: DatabaseReference
+    private val firestore: FirebaseFirestore
 ): UserRepository {
 
     companion object {
         const val USER_PATH = "users"
     }
 
-    private val service = FirebaseDatabaseGenericService(
-        reference = reference,
-        basePath = USER_PATH,
+    private val service = FirebaseFirestoreGenericService(
+        firestore = firestore,
+        collectionPath = USER_PATH,
         clazz = UserDto::class.java
     )
 

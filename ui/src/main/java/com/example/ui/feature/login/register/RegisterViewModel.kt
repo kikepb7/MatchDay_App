@@ -35,7 +35,7 @@ class RegisterViewModel(
     private var uploadedImageUrl: String? = null
 
     fun registerAdmin(clubMemberModel: ClubMemberModel, club: ClubModel) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             _state.value = RegisterState.Loading
 
             val user = clubMemberModel.user
@@ -68,7 +68,7 @@ class RegisterViewModel(
     }
 
     fun registerPlayer(user: UserModel, player: PlayerModel) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             _state.value = RegisterState.Loading
 
             when (val authResult = registerUserUseCase(user)) {
