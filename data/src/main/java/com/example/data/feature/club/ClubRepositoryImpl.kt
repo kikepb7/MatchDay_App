@@ -3,11 +3,9 @@ package com.example.data.feature.club
 import com.example.data.feature.club.dto.ClubDto
 import com.example.data.feature.club.mapper.toClubDto
 import com.example.data.feature.club.mapper.toClubModel
-import com.example.data.feature.firebase.FirebaseDatabaseGenericService
 import com.example.domain.feature.club.model.ClubModel
 import com.example.domain.feature.club.repository.ClubRepository
 import com.example.firebase.firestore.FirebaseFirestoreGenericService
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

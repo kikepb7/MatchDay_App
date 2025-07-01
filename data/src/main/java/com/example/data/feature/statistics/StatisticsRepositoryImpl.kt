@@ -3,12 +3,9 @@ package com.example.data.feature.statistics
 import com.example.data.feature.statistics.dto.StatisticDto
 import com.example.data.feature.statistics.mapper.toStatisticDto
 import com.example.data.feature.statistics.mapper.toStatisticModel
-import com.example.data.feature.firebase.FirebaseDatabaseGenericService
 import com.example.domain.feature.statistics.model.StatisticModel
 import com.example.domain.feature.statistics.repository.StatisticsRepository
 import com.example.firebase.firestore.FirebaseFirestoreGenericService
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.snapshots
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -19,25 +16,12 @@ class StatisticsRepositoryImpl(
     private val firestore: FirebaseFirestore
 ): StatisticsRepository {
 
-    /*companion object {
-        const val STATISTIC_PATH = "statistics"
-        const val MATCHES_PATH = "matches"
-
-        fun matchStatistics(matchId: String) = "$MATCHES_PATH/$matchId/$STATISTIC_PATH"
-        fun statisticsForMatch(matchId: String, statId: String) = "$MATCHES_PATH/$matchId/$STATISTIC_PATH/$statId"
-    }*/
-
     companion object {
         const val STATISTIC_PATH = "statistics"
-        fun matchStatisticsPath(matchId: String) = "matches/$matchId/statistics"
-        fun statisticForMatchPath(matchId: String, statId: String) = "matches/$matchId/statistics/$statId"
+        const val MATCHES_PATH = "matches"
+        fun matchStatisticsPath(matchId: String) = "$MATCHES_PATH/$matchId/$STATISTIC_PATH"
+        fun statisticForMatchPath(matchId: String, statId: String) = "$MATCHES_PATH/$matchId/$STATISTIC_PATH/$statId"
     }
-
-//    private val service = FirebaseDatabaseGenericService(
-//        reference = reference,
-//        basePath = STATISTIC_PATH,
-//        clazz = StatisticDto::class.java
-//    )
 
     private val service = FirebaseFirestoreGenericService(
         firestore = firestore,

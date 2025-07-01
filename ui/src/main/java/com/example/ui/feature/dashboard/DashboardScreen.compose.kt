@@ -57,8 +57,8 @@ import com.example.domain.feature.user.model.UserModel
 import com.example.ui.R
 import com.example.ui.R.drawable as RDrawable
 import com.example.ui.feature.dashboard.provider.mockMatches
-import com.example.ui.feature.login.logout.LogoutState
-import com.example.ui.feature.login.logout.LogoutViewModel
+import com.example.ui.feature.home.logout.LogoutState
+import com.example.ui.feature.home.logout.LogoutViewModel
 import com.example.ui.navigation.HomeNavKeys
 import kotlinx.coroutines.delay
 import org.koin.compose.viewmodel.koinViewModel
@@ -83,7 +83,7 @@ fun DashboardScreenView(
     LaunchedEffect(logoutState) {
         if (logoutState is LogoutState.Success) {
             backStack.clear()
-            backStack.add(HomeNavKeys.LoginScreen)
+            backStack.add(HomeNavKeys.HomeScreen)
         }
     }
 

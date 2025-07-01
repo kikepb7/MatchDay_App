@@ -1,4 +1,4 @@
-package com.example.ui.feature.login
+package com.example.ui.feature.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

@@ -1,4 +1,4 @@
-package com.example.data.feature.firebase
+package com.example.firebase.realtime
 
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.snapshots

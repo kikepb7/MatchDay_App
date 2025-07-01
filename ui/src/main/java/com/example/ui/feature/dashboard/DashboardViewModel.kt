@@ -19,6 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class DashboardViewModel(
@@ -46,14 +47,16 @@ class DashboardViewModel(
                 val members = getAllClubUsersUseCase(clubId).first()
                 val matches = getMatchesUseCase(clubId).first()
 
-                _state.value = DashboardState.Success(
-                    user = user,
-                    club = club,
-                    members = members,
-                    matches = matches
-                )
+                _state.update {
+                    DashboardState.Success(
+                        user = user,
+                        club = club,
+                        members = members,
+                        matches = matches
+                    )
+                }
             } catch (e: Exception) {
-                _state.value = DashboardState.Error(e.message ?: "Error desconocido")
+                _state.update { DashboardState.Error(e.message ?: "Error desconocido") }
             }
         }
     }
@@ -66,7 +69,7 @@ class DashboardViewModel(
                 loadData(userId = userId, clubId = clubId)
                 setSuccessMessage(message = "Partido creado correctamente")
             } else {
-                _state.value = DashboardState.Error(message = result.exceptionOrNull()?.message ?: "Error al crear el partido")
+                _state.update { DashboardState.Error(message = result.exceptionOrNull()?.message ?: "Error al crear el partido") }
             }
         }
     }
@@ -78,7 +81,7 @@ class DashboardViewModel(
             if (result.isSuccess) {
                 setSuccessMessage("Jugador añadido al equipo ${team.name.lowercase()}")
             } else {
-                _state.value = DashboardState.Error(result.exceptionOrNull()?.message ?: "Error al añadir jugador")
+                _state.update { DashboardState.Error(result.exceptionOrNull()?.message ?: "Error al añadir jugador") }
             }
         }
     }
@@ -87,7 +90,7 @@ class DashboardViewModel(
         val currentState = _state.value
 
         if (currentState is DashboardState.Success) {
-            _state.value = currentState.copy(selectedMatchId = matchId)
+            _state.update { currentState.copy(selectedMatchId = matchId) }
         }
     }
 
@@ -95,7 +98,7 @@ class DashboardViewModel(
         val currentState = _state.value
 
         if (currentState is DashboardState.Success) {
-            _state.value = currentState.copy(successMessage = message)
+            _state.update { currentState.copy(successMessage = message) }
         }
     }
 
@@ -103,7 +106,7 @@ class DashboardViewModel(
         val currentState = _state.value
 
         if (currentState is DashboardState.Success) {
-            _state.value = currentState.copy(successMessage = null)
+            _state.update { currentState.copy(successMessage = null) }
         }
     }
 
@@ -112,7 +115,7 @@ class DashboardViewModel(
             val enabled = isSubscribedToMatchTopicUseCase()
             val currentState = _state.value
             if (currentState is DashboardState.Success) {
-                _state.value = currentState.copy(notificationsEnabled = enabled)
+                _state.update { currentState.copy(notificationsEnabled = enabled) }
             }
         }
     }
@@ -128,7 +131,7 @@ class DashboardViewModel(
             if (result.isSuccess) {
                 val currentState = _state.value
                 if (currentState is DashboardState.Success) {
-                    _state.value = currentState.copy(notificationsEnabled = enabled)
+                    _state.update { currentState.copy(notificationsEnabled = enabled) }
                 }
             }
         }

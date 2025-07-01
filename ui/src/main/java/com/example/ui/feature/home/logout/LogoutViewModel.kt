@@ -1,4 +1,4 @@
-package com.example.ui.feature.login.logout
+package com.example.ui.feature.home.logout
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -6,6 +6,7 @@ import com.example.domain.feature.firebase.authentication.usecases.LogoutUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class LogoutViewModel(
@@ -21,9 +22,11 @@ class LogoutViewModel(
 
             try {
                 logoutUseCase()
-                _state.value = LogoutState.Success
+                _state.update { LogoutState.Success }
             } catch (e: Exception) {
-                _state.value = LogoutState.Error("Error cerrando la sesión: ${e.localizedMessage}")
+                _state.update {
+                    LogoutState.Error("Error cerrando la sesión: ${e.localizedMessage}")
+                }
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.example.ui.feature.login.register
+package com.example.ui.feature.home.signup
 
 import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement

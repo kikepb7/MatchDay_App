@@ -2,11 +2,11 @@ package com.example.ui.di
 
 import com.example.ui.feature.analytics.AnalyticsViewModel
 import com.example.ui.feature.dashboard.DashboardViewModel
-import com.example.ui.feature.login.logout.LogoutViewModel
+import com.example.ui.feature.home.logout.LogoutViewModel
 import org.koin.core.module.dsl.viewModel
-import com.example.ui.feature.login.register.RegisterViewModel
+import com.example.ui.feature.home.signup.RegisterViewModel
 import com.example.ui.feature.analytics.RegisterAnalyticsEventHandler
-import com.example.ui.feature.login.signup.SignUpViewModel
+import com.example.ui.feature.home.login.SignUpViewModel
 import com.example.ui.feature.splash.SplashViewModel
 import org.koin.dsl.module
 

@@ -5,13 +5,13 @@ import kotlinx.serialization.Serializable
 
 object HomeNavKeys {
     @Serializable
+    object HomeScreen : NavKey
+
+    @Serializable
     object LoginScreen : NavKey
 
     @Serializable
     object SignUpScreen : NavKey
-
-    @Serializable
-    object RegisterScreen : NavKey
 
     @Serializable
     data class DashboardScreen(

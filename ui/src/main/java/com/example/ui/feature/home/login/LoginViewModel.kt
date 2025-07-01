@@ -1,4 +1,4 @@
-package com.example.ui.feature.login.signup
+package com.example.ui.feature.home.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SignUpViewModel(
@@ -23,17 +24,17 @@ class SignUpViewModel(
 
     fun signUpWithEmail(email: String, password: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            _state.value = SignUpState.Loading
+            _state.update { SignUpState.Loading }
 
             when (val result = signUpEmailPasswordUseCase(email = email, password = password)) {
                 is Either.Success -> {
                     val userId = result.data
 
                     val user = getUserByIdUseCase(userId = userId).first()
-                    _state.value = SignUpState.Success(userId = user?.id.toString(), clubId = user?.clubId.toString())
+                    _state.update { SignUpState.Success(userId = user?.id.toString(), clubId = user?.clubId.toString()) }
                 }
                 is Either.Error -> {
-                    _state.value = SignUpState.Error(result.error.toString())
+                    _state.update { SignUpState.Error(result.error.toString()) }
                 }
             }
         }
@@ -41,17 +42,17 @@ class SignUpViewModel(
 
     fun registerWithGoogle(idToken: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            _state.value = SignUpState.Loading
+            _state.update { SignUpState.Loading }
 
             when (val result = registerUserWithGoogleUseCase(idToken = idToken)) {
                 is Either.Success -> {
                     val userId = result.data
                     val user = getUserByIdUseCase(userId).first()
-                    _state.value = SignUpState.Success(userId = user?.id.orEmpty(), clubId = user?.clubId.orEmpty())
+                    _state.update { SignUpState.Success(userId = user?.id.orEmpty(), clubId = user?.clubId.orEmpty()) }
                 }
 
                 is Either.Error -> {
-                    _state.value = SignUpState.Error(message = result.error)
+                    _state.update { SignUpState.Error(message = result.error) }
                 }
             }
         }

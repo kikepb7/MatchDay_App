@@ -1,4 +1,4 @@
-package com.example.ui.feature.login.register
+package com.example.ui.feature.home.signup
 
 import android.content.Context
 import android.net.Uri
@@ -18,6 +18,7 @@ import com.example.domain.feature.user.usecases.UploadUserImageUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -36,7 +37,7 @@ class RegisterViewModel(
 
     fun registerAdmin(clubMemberModel: ClubMemberModel, club: ClubModel) {
         viewModelScope.launch(Dispatchers.IO) {
-            _state.value = RegisterState.Loading
+            _state.update { RegisterState.Loading }
 
             val user = clubMemberModel.user
             val player = clubMemberModel.player
@@ -54,14 +55,14 @@ class RegisterViewModel(
 
                     val result = registerAdminUserCase(user = userWithId, club = club, player = playerWithIds)
                     result.getOrNull()?.let { (createdUser, createdClub, createdPlayer) ->
-                        _state.value = RegisterState.Success(user = createdUser, club = createdClub, player = createdPlayer)
+                        _state.update { RegisterState.Success(user = createdUser, club = createdClub, player = createdPlayer) }
                     } ?: run {
-                        _state.value = RegisterState.Error("Error creando club o usuario.")
+                        _state.update { RegisterState.Error("Error creando club o usuario") }
                     }
                 }
 
                 is Either.Error -> {
-                    _state.value = RegisterState.Error(authResult.error.toString())
+                    _state.update { RegisterState.Error(authResult.error.toString()) }
                 }
             }
         }
@@ -69,7 +70,7 @@ class RegisterViewModel(
 
     fun registerPlayer(user: UserModel, player: PlayerModel) {
         viewModelScope.launch(Dispatchers.IO) {
-            _state.value = RegisterState.Loading
+            _state.update { RegisterState.Loading }
 
             when (val authResult = registerUserUseCase(user)) {
                 is Either.Success -> {
@@ -78,14 +79,14 @@ class RegisterViewModel(
 
                     val result = registerPlayerUserCase(userWithId, player)
                     result.getOrNull()?.let { (createdUser, createdPlayer) ->
-                        _state.value = RegisterState.Success(user = createdUser, player = createdPlayer)
+                        _state.update { RegisterState.Success(user = createdUser, player = createdPlayer) }
                     } ?: run {
-                        _state.value = RegisterState.Error("Error creando jugador.")
+                        _state.update { RegisterState.Error("Error creando jugador") }
                     }
                 }
 
                 is Either.Error -> {
-                    _state.value = RegisterState.Error(authResult.error.toString())
+                    _state.update { RegisterState.Error(authResult.error.toString()) }
                 }
             }
         }

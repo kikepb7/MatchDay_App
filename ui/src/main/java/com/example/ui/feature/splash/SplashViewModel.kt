@@ -7,6 +7,7 @@ import com.example.domain.common.FailureModel
 import com.example.domain.feature.splash.usecases.CheckUserSessionUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SplashViewModel(
@@ -20,11 +21,11 @@ class SplashViewModel(
         viewModelScope.launch {
             when (val result = checkUserSessionUseCase()) {
                 is Either.Success -> {
-                    _destination.value = if (result.data) SplashDestination.Dashboard else SplashDestination.Login
+                    _destination.update { if (result.data) SplashDestination.Dashboard else SplashDestination.Login }
                 }
 
                 is Either.Error -> {
-                    _destination.value = SplashDestination.Error(result.error)
+                    _destination.update { SplashDestination.Error(result.error) }
                 }
             }
         }
