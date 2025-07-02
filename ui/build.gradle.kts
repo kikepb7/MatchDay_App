@@ -40,6 +40,7 @@ android {
 dependencies {
 
     implementation(project(":domain"))
+    implementation(":custom-ui")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

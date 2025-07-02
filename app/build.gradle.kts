@@ -57,6 +57,7 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":ui"))
     implementation(project(":firebase"))
+    implementation(project(":custom-ui"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
